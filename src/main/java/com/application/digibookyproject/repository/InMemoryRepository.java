@@ -1,17 +1,18 @@
 package com.application.digibookyproject.repository;
 
+import com.application.digibookyproject.api.dto.QueryDto;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 public class InMemoryRepository <T>{
     private final Map<UUID, T> storedItems = new ConcurrentHashMap<>();
 
-    public List<T> getAll() {
-        return storedItems.values().stream().toList();
-    }
+    public List<T> getAll() { return storedItems.values().stream().toList(); }
 
     public Optional<T> get(UUID id) {
         return Optional.ofNullable(storedItems.get(id));
