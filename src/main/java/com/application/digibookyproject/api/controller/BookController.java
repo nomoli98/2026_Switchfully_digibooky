@@ -4,12 +4,10 @@ import com.application.digibookyproject.api.dto.BookDto;
 import com.application.digibookyproject.service.request.BookFilterQueryRequest;
 import com.application.digibookyproject.api.mapper.BookMapper;
 import com.application.digibookyproject.service.BookService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/books")
@@ -36,7 +34,7 @@ public class BookController {
     }
 
     @GetMapping(path = "/{id}")
-    public BookDto getBookById(){
-        return null;
+    public BookDto getBookById(@PathVariable UUID id){
+        return bookMapper.mapToDto(bookService.getBookById(id));
     }
 }
