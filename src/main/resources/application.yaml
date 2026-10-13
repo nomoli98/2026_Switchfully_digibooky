@@ -1,6 +1,19 @@
 spring:
   application:
     name: 01-digibooky-project
+
+  web:
+    error:
+      include-message: always
+
 springdoc:
   swagger-ui:
     path: /swagger
+
+
+logging:
+  file:
+    name: log/application.log
+  level:
+    root: INFO
+    com.application.digibookyproject : DEBUG

@@ -1,5 +1,8 @@
 package com.application.digibookyproject.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -8,15 +11,22 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
 public class InMemoryRepository<T> {
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
+
     private final Map<UUID, T> storedItems = new ConcurrentHashMap<>();
 
-    public List<T> getAll() { return storedItems.values().stream().toList(); }
+    public List<T> getAll() {
+        logger.trace("Fetching all items ({} {} stored)", storedItems.size(), storedItems.getClass());
+        return storedItems.values().stream().toList();
+    }
 
     public Optional<T> get(UUID id) {
+        logger.trace("Fetching item {} of the class {}", id, storedItems.getClass());
         return Optional.ofNullable(storedItems.get(id));
     }
 
     protected T saveWithId(UUID id, T item) {
+        logger.debug("Saving item {} in {} repository", id, item.getClass());
         storedItems.put(id, item);
         return item;
     }

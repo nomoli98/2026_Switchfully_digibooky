@@ -1,4 +1,4 @@
-package com.application.digibookyproject.service.exceptions;
+package com.application.digibookyproject.service.exception;
 
 public class ConflictException extends RuntimeException {
     private ConflictException(String message) {

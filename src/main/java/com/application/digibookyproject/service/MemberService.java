@@ -3,8 +3,8 @@ package com.application.digibookyproject.service;
 import com.application.digibookyproject.domain.Member;
 import com.application.digibookyproject.repository.MemberRepository;
 import com.application.digibookyproject.service.request.CreateMemberRequest;
-import com.application.digibookyproject.service.exceptions.BadRequestException;
-import com.application.digibookyproject.service.exceptions.ConflictException;
+import com.application.digibookyproject.service.exception.BadRequestException;
+import com.application.digibookyproject.service.exception.ConflictException;
 import org.springframework.stereotype.Service;
 
 @Service
