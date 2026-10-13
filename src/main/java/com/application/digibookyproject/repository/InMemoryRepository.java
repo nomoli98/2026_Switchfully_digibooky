@@ -5,8 +5,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
-public class InMemoryRepository <T>{
+public class InMemoryRepository<T> {
     private final Map<UUID, T> storedItems = new ConcurrentHashMap<>();
 
     public List<T> getAll() { return storedItems.values().stream().toList(); }
@@ -18,5 +19,9 @@ public class InMemoryRepository <T>{
     protected T saveWithId(UUID id, T item) {
         storedItems.put(id, item);
         return item;
+    }
+
+    protected Optional<T> getOptional(Predicate<T> predicate) {
+        return storedItems.values().stream().filter(predicate).findAny();
     }
 }
