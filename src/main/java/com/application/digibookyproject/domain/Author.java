@@ -17,5 +17,11 @@ public class Author {
         return lastname;
     }
 
-
+    @Override
+    public String toString() {
+        return "Author{" +
+                "firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                '}';
+    }
 }
