@@ -2,7 +2,7 @@ package com.application.digibookyproject.service;
 
 import com.application.digibookyproject.domain.Member;
 import com.application.digibookyproject.repository.MemberRepository;
-import com.application.digibookyproject.service.dto.CreateMemberRequestDto;
+import com.application.digibookyproject.service.dto.CreateMemberRequest;
 import com.application.digibookyproject.service.exceptions.BadRequestException;
 import com.application.digibookyproject.service.exceptions.ConflictException;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class MemberService {
     }
 
     public Member createMember(
-            CreateMemberRequestDto request
+            CreateMemberRequest request
     ) {
         verifyFilledIn(request.email(), "email");
         verifyFilledIn(request.inss(), "inss");

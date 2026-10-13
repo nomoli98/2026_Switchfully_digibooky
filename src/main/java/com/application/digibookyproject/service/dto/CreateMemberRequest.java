@@ -1,6 +1,6 @@
 package com.application.digibookyproject.service.dto;
 
-public record CreateMemberRequestDto (
+public record CreateMemberRequest(
         String firstname,
         String lastname,
         String email,

@@ -3,7 +3,7 @@ package com.application.digibookyproject.service;
 import com.application.digibookyproject.domain.Member;
 import com.application.digibookyproject.factory.MemberTestData;
 import com.application.digibookyproject.repository.MemberRepository;
-import com.application.digibookyproject.service.dto.CreateMemberRequestDto;
+import com.application.digibookyproject.service.dto.CreateMemberRequest;
 import com.application.digibookyproject.service.exceptions.BadRequestException;
 import com.application.digibookyproject.service.exceptions.ConflictException;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,19 +30,19 @@ class MemberServiceTest {
 
     @Test
     void createMember_givenValidArguments_thenCreateNewMember() {
-        CreateMemberRequestDto createMemberRequestDto = new CreateMemberRequestDto(
+        CreateMemberRequest createMemberRequest = new CreateMemberRequest(
                 "Ron", "Reader", "ronreader@reading.com",
                 "Read Street", "4A",
                 8000, "Readsville", "12-345-6789"
         );
 
-        Member result = memberService.createMember(createMemberRequestDto);
+        Member result = memberService.createMember(createMemberRequest);
         assertEquals("Ron", result.getFirstname());
     }
 
     @Test
     void createMember_givenInvalidEmail_thenThrowsException() {
-        CreateMemberRequestDto dto = new CreateMemberRequestDto(
+        CreateMemberRequest dto = new CreateMemberRequest(
                 "Ron", "Reader", "ronreader-reading.com",
                 "Read Street", "4A",
                 8000, "Readsville", "12-345-6789"
@@ -55,7 +55,7 @@ class MemberServiceTest {
     public static Stream<Arguments> missingFieldSource() {
         return Stream.of(
                 Arguments.of(
-                        new CreateMemberRequestDto(
+                        new CreateMemberRequest(
                                 "Ron", "Reader", null,
                                 "Read Street", "4A",
                                 8000, "Readsville", "12-345-6789"
@@ -63,7 +63,7 @@ class MemberServiceTest {
                         "email", "Member parameter email is required"
                 ),
                 Arguments.of(
-                        new CreateMemberRequestDto(
+                        new CreateMemberRequest(
                                 "Ron", "Reader", "ronreader@reading.com",
                                 "Read Street", "4A",
                                 8000, "Readsville", null
@@ -71,7 +71,7 @@ class MemberServiceTest {
                         "inss", "Member parameter inss is required"
                 ),
                 Arguments.of(
-                        new CreateMemberRequestDto(
+                        new CreateMemberRequest(
                                 "", "Reader", "ronreader@reading.com",
                                 "Read Street", "4A",
                                 8000, "Readsville", "12-345-6789"
@@ -79,7 +79,7 @@ class MemberServiceTest {
                         "firstname", "Member parameter firstname is required"
                 ),
                 Arguments.of(
-                        new CreateMemberRequestDto(
+                        new CreateMemberRequest(
                                 "Ron", "Reader", "ronreader@reading.com",
                                 "Read Street", "4A",
                                 8000, "", "12-345-6789"
@@ -92,7 +92,7 @@ class MemberServiceTest {
     @ParameterizedTest(name = "missing {1}")
     @MethodSource("missingFieldSource")
     @DisplayName("Missing fields on creation")
-    void createMember_givenMissingField_thenThrowsBadRequestException(CreateMemberRequestDto dto, String field, String exceptionMessage) {
+    void createMember_givenMissingField_thenThrowsBadRequestException(CreateMemberRequest dto, String field, String exceptionMessage) {
         BadRequestException ex = assertThrows(BadRequestException.class, () -> memberService.createMember(dto));
         assertEquals(exceptionMessage, ex.getMessage());
     }
@@ -100,7 +100,7 @@ class MemberServiceTest {
     public static Stream<Arguments> duplicateFieldSource() {
         return Stream.of(
                 Arguments.of(
-                        new CreateMemberRequestDto(
+                        new CreateMemberRequest(
                                 "Ron", "Reader", "jan.peeters@example.com",
                                 "Read Street", "4A",
                                 8000, "Readsville", "12-345-6789"
@@ -108,7 +108,7 @@ class MemberServiceTest {
                         "email", "A user with email jan.peeters@example.com already exists."
                 ),
                 Arguments.of(
-                        new CreateMemberRequestDto(
+                        new CreateMemberRequest(
                                 "Ron", "Reader", "ronreader@reading.com",
                                 "Read Street", "4A",
                                 8000, "Readsville", "90.07.22-234.56"
@@ -121,7 +121,7 @@ class MemberServiceTest {
     @ParameterizedTest(name = "duplicate {1}")
     @MethodSource("duplicateFieldSource")
     @DisplayName("Duplicate fields on creation")
-    void createMember_givenDuplicate_thenThrowsConflictException(CreateMemberRequestDto dto, String field, String exceptionMessage) {
+    void createMember_givenDuplicate_thenThrowsConflictException(CreateMemberRequest dto, String field, String exceptionMessage) {
         ConflictException ex = assertThrows(ConflictException.class, () -> memberService.createMember(dto));
         assertEquals(exceptionMessage, ex.getMessage());
     }
