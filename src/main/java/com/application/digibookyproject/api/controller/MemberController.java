@@ -1,10 +1,9 @@
 package com.application.digibookyproject.api.controller;
 
-import com.application.digibookyproject.api.dto.CreateMemberDto;
 import com.application.digibookyproject.api.dto.MemberDto;
 import com.application.digibookyproject.api.mapper.MemberMapper;
 import com.application.digibookyproject.service.MemberService;
-import com.application.digibookyproject.service.dto.CreateMemberRequest;
+import com.application.digibookyproject.service.request.CreateMemberRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,18 +21,7 @@ public class MemberController {
     }
 
     @PostMapping
-    public MemberDto createMember(@RequestBody CreateMemberDto createMemberDto) {
-        return memberMapper.mapToDto(
-                memberService.createMember(new CreateMemberRequest(
-                        createMemberDto.firstname(),
-                        createMemberDto.lastname(),
-                        createMemberDto.email(),
-                        createMemberDto.streetname(),
-                        createMemberDto.streetnumber(),
-                        createMemberDto.postalCode(),
-                        createMemberDto.city(),
-                        createMemberDto.inss()
-                ))
-        );
+    public MemberDto createMember(@RequestBody CreateMemberRequest createMemberRequest) {
+        return memberMapper.mapToDto(memberService.createMember(createMemberRequest));
     }
 }

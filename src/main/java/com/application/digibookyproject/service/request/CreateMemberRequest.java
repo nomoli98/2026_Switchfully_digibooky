@@ -1,4 +1,4 @@
-package com.application.digibookyproject.service.dto;
+package com.application.digibookyproject.service.request;
 
 public record CreateMemberRequest(
         String firstname,
