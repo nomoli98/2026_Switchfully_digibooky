@@ -1,3 +1,6 @@
 spring:
   application:
     name: 01-digibooky-project
+springdoc:
+  swagger-ui:
+    path: /swagger
