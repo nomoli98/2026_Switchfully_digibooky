@@ -8,8 +8,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
-public class InMemoryRepository <T>{
+public class InMemoryRepository<T> {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final Map<UUID, T> storedItems = new ConcurrentHashMap<>();
@@ -28,5 +29,9 @@ public class InMemoryRepository <T>{
         logger.debug("Saving item {} in {} repository", id, item.getClass());
         storedItems.put(id, item);
         return item;
+    }
+
+    protected Optional<T> getOptional(Predicate<T> predicate) {
+        return storedItems.values().stream().filter(predicate).findAny();
     }
 }
