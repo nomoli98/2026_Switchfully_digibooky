@@ -46,6 +46,10 @@ public class Member {
         return streetname;
     }
 
+    public String getLastname() {
+        return lastname;
+    }
+
     public String getStreetnumber() {
         return streetnumber;
     }
