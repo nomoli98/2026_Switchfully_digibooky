@@ -1,7 +1,7 @@
 package com.application.digibookyproject.api.controller;
 
 import com.application.digibookyproject.api.dto.BookDto;
-import com.application.digibookyproject.service.dto.BookFilterQueryDto;
+import com.application.digibookyproject.service.request.BookFilterQueryRequest;
 import com.application.digibookyproject.api.mapper.BookMapper;
 import com.application.digibookyproject.service.BookService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,10 +28,15 @@ public class BookController {
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName) {
-        BookFilterQueryDto bookFilterQueryDto = new BookFilterQueryDto(isbn, title, firstName, lastName);
+        BookFilterQueryRequest bookFilterQueryDto = new BookFilterQueryRequest(isbn, title, firstName, lastName);
         return bookService.getAllBooks(bookFilterQueryDto)
                 .stream()
                 .map(bookMapper::mapToDto)
                 .toList();
+    }
+
+    @GetMapping(path = "/{id}")
+    public BookDto getBookById(){
+        return null;
     }
 }

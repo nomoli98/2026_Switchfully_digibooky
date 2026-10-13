@@ -1,14 +1,12 @@
 package com.application.digibookyproject.service.filter;
 
-import com.application.digibookyproject.service.dto.BookFilterQueryDto;
+import com.application.digibookyproject.service.request.BookFilterQueryRequest;
 import com.application.digibookyproject.domain.Book;
 
-import java.util.Locale;
-
 public class BookFilter {
-    private BookFilterQueryDto dto;
+    private BookFilterQueryRequest dto;
 
-    public BookFilter(BookFilterQueryDto dto) {
+    public BookFilter(BookFilterQueryRequest dto) {
         this.dto = dto;
     }
 
