@@ -1,12 +1,12 @@
 package com.application.digibookyproject.service;
 
-import com.application.digibookyproject.api.dto.QueryDto;
+import com.application.digibookyproject.service.dto.BookFilterQueryDto;
 import com.application.digibookyproject.domain.Book;
 import com.application.digibookyproject.repository.BookRepository;
+import com.application.digibookyproject.service.filter.BookFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class BookService {
@@ -16,16 +16,11 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public List<Book> getAllBooks(QueryDto queryDto) {
-        Stream<Book> books = bookRepository.getAll().stream();
-
-        if (queryDto.getIsbn() != null)
-            books = books.filter(b-> b.getIsbn().equals(queryDto.getIsbn()));
-        if (queryDto.getTitle() != null)
-            books = books.filter(b-> b.getTitle().contains(queryDto.getTitle()));
-
-        return books.toList();
+    public List<Book> getAllBooks(BookFilterQueryDto queryDto) {
+        BookFilter filter = new BookFilter(queryDto);
+        return bookRepository.getAll()
+                .stream()
+                .filter(book -> filter.applyFilters(book))
+                .toList();
     }
-
-
 }

@@ -1,6 +1,6 @@
 package com.application.digibookyproject.service;
 
-import com.application.digibookyproject.api.dto.QueryDto;
+import com.application.digibookyproject.service.dto.BookFilterQueryDto;
 import com.application.digibookyproject.domain.Author;
 import com.application.digibookyproject.domain.Book;
 import com.application.digibookyproject.repository.BookRepository;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 class BookServiceFilterTest {
-    QueryDto dto1, dto2, dto3, dto4;
     Book book1, book2, book3, book4;
     BookRepository repository;
     BookService service;
@@ -21,8 +20,8 @@ class BookServiceFilterTest {
         repository = new BookRepository();
 
         book1 = new Book("le isbn", "le title", new Author("Le", "author"));
-        book2 = new Book("la isbn", "la title", new Author("La", "author"));
-        book3 = new Book("le isbn", "la title because franchement voila", new Author("Le", "author"));
+        book2 = new Book("la isbn", "la title", new Author("La", "auth0r"));
+        book3 = new Book("le isbn", "la title because franchement voila", new Author("Le", "auth0r"));
         book4 = new Book("la isbn", "le title because franchement voila", new Author("La", "author"));
 
         repository.save(book1);
@@ -31,35 +30,42 @@ class BookServiceFilterTest {
         repository.save(book4);
 
         service = new BookService(repository);
-
-        dto1 = new QueryDto("le isbn", null);
-        dto2 = new QueryDto("la isbn", "le title");
-        dto3 = new QueryDto(null, "la title");
-        dto4 = new QueryDto(null, null);
     }
 
     @Test
     void givenIsbnInQueryDto_whenCallingGetAllBooks_thenFilteredListIsReturned() {
-        List<Book> books = service.getAllBooks(dto1);
+        List<Book> books = service.getAllBooks(new BookFilterQueryDto("le isbn", null, null, null));
         Assertions.assertThat(books).containsExactlyInAnyOrderElementsOf(List.of(book1, book3));
     }
 
     @Test
     void givenTitleInQueryDto_whenCallingGetAllBooks_thenFilteredListIsReturned() {
-        List<Book> books = service.getAllBooks(dto3);
+        List<Book> books = service.getAllBooks(new BookFilterQueryDto(null, "la title", null, null));
         Assertions.assertThat(books).containsExactlyInAnyOrderElementsOf(List.of(book2, book3));
     }
 
     @Test
     void givenIsbnAndTitleInQueryDto_whenCallingGetAllBooks_thenFilteredListIsReturned() {
-        List<Book> books = service.getAllBooks(dto2);
-        Assertions.assertThat(books).containsExactlyInAnyOrderElementsOf(List.of(book4));
+        List<Book> books = service.getAllBooks(new BookFilterQueryDto("la isbn", "la title", null, null));
+        Assertions.assertThat(books).containsExactlyInAnyOrderElementsOf(List.of(book2));
     }
 
     @Test
     void givenNullInQueryDto_whenCallingGetAllBooks_thenAllBooksIsReturned() {
-        List<Book> books = service.getAllBooks(dto4);
+        List<Book> books = service.getAllBooks(new BookFilterQueryDto(null, null, null, null));
         Assertions.assertThat(books).containsExactlyInAnyOrderElementsOf(List.of(book1, book2, book3, book4));
+    }
+
+    @Test
+    void givenFirstNameInQueryDto_whenCallingGetAllBooks_thenAllBooksIsReturned() {
+        List<Book> books = service.getAllBooks(new BookFilterQueryDto(null, null, "la", null));
+        Assertions.assertThat(books).containsExactlyInAnyOrderElementsOf(List.of(book2, book4));
+    }
+
+    @Test
+    void givenLastNameInQueryDto_whenCallingGetAllBooks_thenAllBooksIsReturned() {
+        List<Book> books = service.getAllBooks(new BookFilterQueryDto(null, null, null, "AUTH0r"));
+        Assertions.assertThat(books).containsExactlyInAnyOrderElementsOf(List.of(book2, book3));
     }
 
 }
