@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -48,12 +49,6 @@ class InMemoryRepositoryTest {
         bookRepository.saveWithId(book1.getId(), book1);
 
         List<Book> resultBooks = bookRepository.getAll();
-        assertEquals(List.of(book, book1), resultBooks);
+        assertThat(List.of(book, book1)).hasSameElementsAs(resultBooks);
     }
-    /*
-    @Test
-    @DisplayName("saving a book that already exists overrides it")
-    void saveWithId_givenBookIsAlreadySaved_overrideIt() {
-        
-    }*/
 }
