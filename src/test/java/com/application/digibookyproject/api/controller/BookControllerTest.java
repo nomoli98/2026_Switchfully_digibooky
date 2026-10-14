@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 class BookControllerTest {
     @LocalServerPort
     private int port;
-    
+
     @Test
     @DisplayName("getting all books on an empty repo returns an empty list")
     void getAll_givenRepositoryIsEmpty_thenReturnEmptyList() {

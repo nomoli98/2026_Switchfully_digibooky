@@ -22,7 +22,7 @@ public class Member {
             int postalCode,
             String city,
             String inss
-    ) {
+                 ) {
         this.lastname = lastname;
         this.firstname = firstname;
         this.email = email;

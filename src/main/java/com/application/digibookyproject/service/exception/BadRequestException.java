@@ -12,4 +12,12 @@ public class BadRequestException extends RuntimeException {
     public static BadRequestException invalidEmail(String email) {
         return new BadRequestException("Email %s doesn't match pattern x@x.x".formatted(email));
     }
+
+    public static BadRequestException bookParameterRequired(String parameter) {
+        return new BadRequestException("Book parameter %s is required".formatted(parameter));
+    }
+
+    public static BadRequestException invalidIsbn(String isbn) {
+        return new BadRequestException("Given ISBN %s doesn't match ISBN pattern".formatted(isbn));
+    }
 }

@@ -16,7 +16,11 @@ public class InMemoryRepository<T> {
     private final Map<UUID, T> storedItems = new ConcurrentHashMap<>();
 
     public List<T> getAll() {
-        logger.trace("Fetching all items ({} {} stored)", storedItems.size(), storedItems.getClass());
+        logger.trace(
+                "Fetching all items ({} {} stored)",
+                storedItems.size(),
+                storedItems.getClass()
+                    );
         return storedItems.values().stream().toList();
     }
 

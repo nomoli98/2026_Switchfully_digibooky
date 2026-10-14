@@ -30,7 +30,7 @@ class InMemoryRepositoryTest {
         assertEquals(author.getFirstname(), resultBook.getAuthor().getFirstname());
         assertEquals(author.getLastname(), resultBook.getAuthor().getLastname());
     }
-    
+
     @Test
     @DisplayName("getting a book that doesn't exist returns null")
     void get_givenBookDoesNotExist_thenReturnsNull() {
@@ -38,7 +38,7 @@ class InMemoryRepositoryTest {
 
         assertFalse(bookRepository.get(UUID.randomUUID()).isPresent());
     }
-    
+
     @Test
     @DisplayName("getting all books returns a list")
     void getAll_givenBooksExists_thenReturnsBooks() {

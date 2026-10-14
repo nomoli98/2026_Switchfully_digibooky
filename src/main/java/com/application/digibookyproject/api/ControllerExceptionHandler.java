@@ -20,13 +20,19 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     // Expected client error → WARN, message is enough (no stack trace)
     @ExceptionHandler(NotFoundException.class)
-    protected void bookNotFound(NotFoundException ex, HttpServletResponse response) throws IOException {
+    protected void bookNotFound(
+            NotFoundException ex,
+            HttpServletResponse response
+                               ) throws IOException {
         logger.warn("Book not found: {}", ex.getMessage());
         response.sendError(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
 
     @ExceptionHandler(BadRequestException.class)
-    protected void badRequest(BadRequestException ex, HttpServletResponse response) throws IOException {
+    protected void badRequest(
+            BadRequestException ex,
+            HttpServletResponse response
+                             ) throws IOException {
         logger.warn("Bad Request: {}", ex.getMessage());
         response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     }
@@ -41,8 +47,14 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected void unexpectedError(Exception ex, HttpServletResponse response) throws IOException {
         String errorId = UUID.randomUUID().toString();
-        logger.error("Unexpected error: {}", errorId, ex);   // exception LAST = stack trace included
-        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                           "Something went wrong. Please contact support with code: " + errorId);
+        logger.error(
+                "Unexpected error: {}",
+                errorId,
+                ex
+                    );   // exception LAST = stack trace included
+        response.sendError(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Something went wrong. Please contact support with code: " + errorId
+                          );
     }
 }
