@@ -24,19 +24,13 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UnauthorizedException.class)
-    protected void unauthorized(
-            UnauthorizedException ex,
-            HttpServletResponse response
-                               ) throws IOException {
+    protected void unauthorized(UnauthorizedException ex, HttpServletResponse response) throws IOException {
         logger.warn("Unauthorized: {}", ex.getMessage());
         response.sendError(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
     }
 
     @ExceptionHandler(BadRequestException.class)
-    protected void badRequest(
-            BadRequestException ex,
-            HttpServletResponse response
-                             ) throws IOException {
+    protected void badRequest(BadRequestException ex, HttpServletResponse response) throws IOException {
         logger.warn("Bad Request: {}", ex.getMessage());
         response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     }
@@ -48,10 +42,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ForbiddenException.class)
-    protected void forbidden(
-            ForbiddenException ex,
-            HttpServletResponse response
-                            ) throws IOException {
+    protected void forbidden(ForbiddenException ex, HttpServletResponse response) throws IOException {
         logger.warn("Forbidden: {}", ex.getMessage());
         response.sendError(HttpStatus.FORBIDDEN.value(), ex.getMessage());
     }
@@ -60,14 +51,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected void unexpectedError(Exception ex, HttpServletResponse response) throws IOException {
         String errorId = UUID.randomUUID().toString();
-        logger.error(
-                "Unexpected error: {}",
-                errorId,
-                ex
-                    );   // exception LAST = stack trace included
-        response.sendError(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Something went wrong. Please contact support with code: " + errorId
-                          );
+        logger.error("Unexpected error: {}", errorId, ex);   // exception LAST = stack trace included
+        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Something went wrong. Please contact support with code: " + errorId);
     }
 }
