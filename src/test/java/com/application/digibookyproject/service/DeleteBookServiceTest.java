@@ -48,4 +48,6 @@ class DeleteBookServiceTest {
         Assertions.assertThatThrownBy(() -> service.deleteBook(UUID.randomUUID())).isInstanceOf(Exception.class);
     }
 
+
+
 }
