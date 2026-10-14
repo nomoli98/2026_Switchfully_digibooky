@@ -1,6 +1,6 @@
 package com.application.digibookyproject.factory;
 
-import com.application.digibookyproject.domain.Member;
+import com.application.digibookyproject.domain.member.Member;
 import com.application.digibookyproject.repository.MemberRepository;
 
 import java.util.List;

@@ -2,7 +2,7 @@ package com.application.digibookyproject.repository;
 
 import com.application.digibookyproject.domain.Author;
 import com.application.digibookyproject.domain.Book;
-import com.application.digibookyproject.domain.Member;
+import com.application.digibookyproject.domain.member.Member;
 import com.application.digibookyproject.factory.MemberTestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
