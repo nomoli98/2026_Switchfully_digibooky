@@ -1,7 +1,7 @@
 package com.application.digibookyproject.api.controller;
 
-import com.application.digibookyproject.domain.member.Member;
-import com.application.digibookyproject.service.request.CreateMemberRequest;
+import com.application.digibookyproject.domain.Member;
+import com.application.digibookyproject.service.request.PostMemberRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
@@ -23,9 +23,9 @@ class MemberControllerTest {
             String error,
             String message,
             String path
-    ) {}
+    ) { }
 
-    private ValidatableResponse postUser(CreateMemberRequest request) {
+    private ValidatableResponse postUser(PostMemberRequest request) {
         return RestAssured
                 .given()
                 .contentType(ContentType.JSON)
@@ -40,11 +40,11 @@ class MemberControllerTest {
     @Test
     @DisplayName("Adding a member succesfully returns the correct response")
     void postUser_givenRepositoryIsEmpty_thenReturnCreatedObject() {
-        Member member = postUser(new CreateMemberRequest(
-                        "Ron", "Reader", "ronreader@reading.com",
-                        "Read Street", "4A",
-                        8000, "Readsville", "12-345-6789"
-                ))
+        Member member = postUser(new PostMemberRequest(
+                "Ron", "Reader", "ronreader@reading.com",
+                "Read Street", "4A",
+                8000, "Readsville", "12-345-6789"
+        ))
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
@@ -56,13 +56,13 @@ class MemberControllerTest {
     @Test
     @DisplayName("Adding a member succesfully returns the correct response")
     void postUser_givenEmailAlreadyExists_thenThrowsException() {
-        postUser(new CreateMemberRequest(
+        postUser(new PostMemberRequest(
                 "Ron", "Reader", "ronreader@reading.com",
                 "Read Street", "4A",
                 8000, "Readsville", "12-345-6789"
         ));
 
-        ErrorResponse response = postUser(new CreateMemberRequest(
+        ErrorResponse response = postUser(new PostMemberRequest(
                 "Ron", "Reader", "ronreader@reading.com",
                 "Read Street", "4A",
                 8000, "Readsville", "12-345-6779"
@@ -71,13 +71,14 @@ class MemberControllerTest {
                 .statusCode(HttpStatus.CONFLICT.value())
                 .extract().as(ErrorResponse.class);
 
-        Assertions.assertThat(response.message).isEqualTo("A user with email ronreader@reading.com already exists.");
+        Assertions.assertThat(response.message).isEqualTo(
+                "A user with email ronreader@reading.com already exists.");
     }
 
     @Test
     @DisplayName("Adding a member succesfully returns the correct response")
     void postUser_givenEmailEmpty_thenThrowsException() {
-        ErrorResponse response = postUser(new CreateMemberRequest(
+        ErrorResponse response = postUser(new PostMemberRequest(
                 "Ron", "Reader", null,
                 "Read Street", "4A",
                 8000, "Readsville", "12-345-6779"
