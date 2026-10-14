@@ -34,7 +34,7 @@ public class BookController {
     }
 
     @GetMapping(path = "/{id}")
-    public BookDto getBookById(@PathVariable UUID id){
+    public BookDto getBookById(@PathVariable UUID id) {
         return bookMapper.mapToDto(bookService.getBookById(id));
     }
 }

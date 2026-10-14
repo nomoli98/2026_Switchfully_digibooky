@@ -13,7 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MemberRepositoryTest {
     private MemberRepository memberRepository;
-    private final Member storedJulie = new Member("Martin", "Julie", "julie.martin@example.com", "Nieuwstraat", "18", 2000, "Antwerpen", "99.03.14-890.12");
+    private final Member storedJulie = new Member("Martin", "Julie", "julie.martin@example.com", "Nieuwstraat", "18",
+            2000, "Antwerpen", "99.03.14-890.12");
 
     @BeforeEach
     void setUp() {

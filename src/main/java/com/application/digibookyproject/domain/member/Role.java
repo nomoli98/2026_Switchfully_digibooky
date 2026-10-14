@@ -13,7 +13,7 @@ public enum Role {
     )),
     MEMBER(List.of());
 
-    private final List<Permission>  permissions;
+    private final List<Permission> permissions;
 
     Role(List<Permission> permissions) {
         this.permissions = permissions;

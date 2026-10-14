@@ -27,7 +27,6 @@ class MemberServiceTest {
         memberService = new MemberService(memberRepository);
     }
 
-
     @Test
     @DisplayName("Calling createMember with correct arguments returns the created member")
     void createMember_givenValidArguments_thenCreateNewMember() {
@@ -94,7 +93,8 @@ class MemberServiceTest {
     @ParameterizedTest(name = "missing {1}")
     @MethodSource("missingFieldSource")
     @DisplayName("Missing fields on creation")
-    void createMember_givenMissingField_thenThrowsBadRequestException(CreateMemberRequest dto, String field, String exceptionMessage) {
+    void createMember_givenMissingField_thenThrowsBadRequestException(CreateMemberRequest dto, String field,
+                                                                      String exceptionMessage) {
         BadRequestException ex = assertThrows(BadRequestException.class, () -> memberService.createMember(dto));
         assertEquals(exceptionMessage, ex.getMessage());
     }
@@ -123,7 +123,8 @@ class MemberServiceTest {
     @ParameterizedTest(name = "duplicate {1}")
     @MethodSource("duplicateFieldSource")
     @DisplayName("Duplicate fields on creation")
-    void createMember_givenDuplicate_thenThrowsConflictException(CreateMemberRequest dto, String field, String exceptionMessage) {
+    void createMember_givenDuplicate_thenThrowsConflictException(CreateMemberRequest dto, String field,
+                                                                 String exceptionMessage) {
         ConflictException ex = assertThrows(ConflictException.class, () -> memberService.createMember(dto));
         assertEquals(exceptionMessage, ex.getMessage());
     }

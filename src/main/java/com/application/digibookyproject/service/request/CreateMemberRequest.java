@@ -9,5 +9,5 @@ public record CreateMemberRequest(
         int postalCode,
         String city,
         String inss
-){
+) {
 }

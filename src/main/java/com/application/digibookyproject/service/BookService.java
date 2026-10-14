@@ -22,9 +22,9 @@ public class BookService {
     public List<Book> getAllBooks(BookFilterQueryRequest queryDto) {
         BookPredicate filter = new BookPredicate(queryDto);
         return bookRepository.getAll()
-                             .stream()
-                             .filter(filter::applyFilters)
-                             .toList();
+                .stream()
+                .filter(filter::applyFilters)
+                .toList();
     }
 
     public Book getBookById(UUID id) {

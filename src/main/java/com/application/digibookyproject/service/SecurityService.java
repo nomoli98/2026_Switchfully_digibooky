@@ -18,7 +18,7 @@ public class SecurityService {
         if (email == null) throw UnauthorizedException.invalidCredentials();
 
         Member member = memberRepository.getMemberWithEmail(email)
-                                        .orElseThrow(UnauthorizedException::invalidCredentials);
+                .orElseThrow(UnauthorizedException::invalidCredentials);
 
         if (!member.hasPermission(permission)) throw permission.getException();
     }

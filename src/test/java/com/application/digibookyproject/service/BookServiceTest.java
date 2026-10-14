@@ -51,8 +51,6 @@ class BookServiceTest {
     void getOne_givenBookDoesntExist_thenThrowNotFoundException() {
         UUID newId = UUID.randomUUID();
         assertThrows(NotFoundException.class,
-                     () -> bookRepository.get(newId).orElseThrow(() -> NotFoundException.bookNotFound(newId)));
+                () -> bookRepository.get(newId).orElseThrow(() -> NotFoundException.bookNotFound(newId)));
     }
-
-
 }

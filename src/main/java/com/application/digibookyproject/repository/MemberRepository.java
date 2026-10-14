@@ -21,7 +21,8 @@ public class MemberRepository extends InMemoryRepository<Member> {
                 null,
                 0,
                 null,
-                null);
+                null
+        );
         admin.setRole(Role.ADMIN);
         save(admin);
     }

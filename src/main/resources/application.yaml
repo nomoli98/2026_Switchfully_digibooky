@@ -16,4 +16,4 @@ logging:
     name: log/application.log
   level:
     root: INFO
-    com.application.digibookyproject : DEBUG
+    com.application.digibookyproject: DEBUG

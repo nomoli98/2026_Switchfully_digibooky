@@ -74,5 +74,4 @@ class BookServicePredicateTest {
         List<Book> books = service.getAllBooks(new BookFilterQueryRequest(null, null, null, "AUTH0r"));
         Assertions.assertThat(books).containsExactlyInAnyOrderElementsOf(List.of(book2, book3));
     }
-
 }

@@ -52,6 +52,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     protected void unexpectedError(Exception ex, HttpServletResponse response) throws IOException {
         String errorId = UUID.randomUUID().toString();
         logger.error("Unexpected error: {}", errorId, ex);   // exception LAST = stack trace included
-        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Something went wrong. Please contact support with code: " + errorId);
+        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Something went wrong. Please contact support " +
+                "with code: " + errorId);
     }
 }
