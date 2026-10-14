@@ -5,8 +5,8 @@ import java.util.UUID;
 
 public class Book {
     private final String isbn;
-    private final String title;
-    private final Author author;
+    private String title;
+    private Author author;
     private final UUID id;
 
     public Book(String isbn, String title, Author author) {
@@ -30,6 +30,14 @@ public class Book {
 
     public UUID getId() {
         return id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     @Override

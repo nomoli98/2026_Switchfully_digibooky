@@ -1,8 +1,8 @@
 package com.application.digibookyproject.api.controller;
 
 import com.application.digibookyproject.api.dto.BookDto;
-import com.application.digibookyproject.domain.Book;
 import com.application.digibookyproject.domain.member.Permission;
+import com.application.digibookyproject.service.SecurityService;
 import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
 import com.application.digibookyproject.api.mapper.BookMapper;
 import com.application.digibookyproject.service.BookService;
@@ -17,10 +17,14 @@ import java.util.UUID;
 public class BookController {
     private final BookService bookService;
     private final BookMapper bookMapper;
+    private final SecurityService securityService;
 
-    public BookController(BookService bookService, BookMapper bookMapper) {
+    public BookController(BookService bookService, BookMapper bookMapper,
+                          SecurityService securityService
+                         ) {
         this.bookService = bookService;
         this.bookMapper = bookMapper;
+        this.securityService = securityService;
     }
 
     @GetMapping
@@ -32,14 +36,11 @@ public class BookController {
                                     ) {
         GetBooksWithFilterRequest bookFilterQueryDto = new GetBooksWithFilterRequest(
                 isbn,
-                title,
-                firstName,
-                lastName
+                                                                                     title,
+                                                                                     firstName,
+                                                                                     lastName
         );
-        return bookService.getAllBooks(bookFilterQueryDto)
-                          .stream()
-                          .map(bookMapper::mapToDto)
-                          .toList();
+        return bookService.getAllBooks(bookFilterQueryDto).stream().map(bookMapper::mapToDto).toList();
 
     }
 
@@ -53,5 +54,14 @@ public class BookController {
                                 @RequestHeader(value = "Authorization", required = false) String email ) {
         securityService.validateAuthorization(email, Permission.REGISTER_BOOK);
         return bookMapper.mapToDto(bookService.createBook(postBookRequest));
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public BookDto deleteBook(
+            @PathVariable UUID id,
+            @RequestHeader(value = "Authorization", required = false) String email
+                             ) {
+        securityService.validateAuthorization(email, Permission.DELETE_BOOK);
+        return bookMapper.mapToDto(bookService.deleteBook(id));
     }
 }
