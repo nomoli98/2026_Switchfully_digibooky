@@ -47,7 +47,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         response.sendError(HttpStatus.CONFLICT.value(), ex.getMessage());
     }
 
-    @ExceptionHandler(ConflictException.class)
+    @ExceptionHandler(ForbiddenException.class)
     protected void forbidden(
             ForbiddenException ex,
             HttpServletResponse response
