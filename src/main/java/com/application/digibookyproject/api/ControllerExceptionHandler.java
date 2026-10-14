@@ -3,6 +3,7 @@ package com.application.digibookyproject.api;
 import com.application.digibookyproject.service.exception.BadRequestException;
 import com.application.digibookyproject.service.exception.ConflictException;
 import com.application.digibookyproject.service.exception.NotFoundException;
+import com.application.digibookyproject.service.exception.UnauthorizedException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,15 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
     // Expected client error → WARN, message is enough (no stack trace)
     @ExceptionHandler(NotFoundException.class)
-    protected void bookNotFound(NotFoundException ex, HttpServletResponse response) throws IOException {
-        logger.warn("Book not found: {}", ex.getMessage());
+    protected void notFound(NotFoundException ex, HttpServletResponse response) throws IOException {
+        logger.warn("Not found: {}", ex.getMessage());
         response.sendError(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    protected void unauthorized(UnauthorizedException ex, HttpServletResponse response) throws IOException {
+        logger.warn("Unauthorized: {}", ex.getMessage());
+        response.sendError(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
     }
 
     @ExceptionHandler(BadRequestException.class)

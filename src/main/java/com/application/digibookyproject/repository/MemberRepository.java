@@ -1,6 +1,7 @@
 package com.application.digibookyproject.repository;
 
-import com.application.digibookyproject.domain.Member;
+import com.application.digibookyproject.domain.member.Member;
+import com.application.digibookyproject.domain.member.Role;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -9,6 +10,20 @@ import java.util.Optional;
 public class MemberRepository extends InMemoryRepository<Member> {
     public Member save(Member member) {
         return saveWithId(member.getId(), member);
+    }
+
+    public MemberRepository() {
+        Member admin = new Member(
+                "admin",
+                "admin",
+                "admin@example.com",
+                null,
+                null,
+                0,
+                null,
+                null);
+        admin.setRole(Role.ADMIN);
+        save(admin);
     }
 
     public Optional<Member> getMemberWithInss(String inss) {

@@ -1,4 +1,4 @@
-package com.application.digibookyproject.domain;
+package com.application.digibookyproject.domain.member;
 
 import java.util.UUID;
 
@@ -12,6 +12,7 @@ public class Member {
     private final String city;
     private final String Inss;
     private final UUID id;
+    private Role role = Role.MEMBER;
 
     public Member(
             String lastname,
@@ -68,5 +69,13 @@ public class Member {
 
     public UUID getId() {
         return id;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public boolean hasPermission(Permission permission) {
+        return role.getPermissions().contains(permission);
     }
 }

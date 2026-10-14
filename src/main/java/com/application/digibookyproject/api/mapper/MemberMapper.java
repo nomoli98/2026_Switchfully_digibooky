@@ -1,7 +1,7 @@
 package com.application.digibookyproject.api.mapper;
 
 import com.application.digibookyproject.api.dto.MemberDto;
-import com.application.digibookyproject.domain.Member;
+import com.application.digibookyproject.domain.member.Member;
 import org.springframework.stereotype.Component;
 
 @Component
