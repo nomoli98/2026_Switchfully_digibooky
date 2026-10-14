@@ -35,6 +35,12 @@ public class InMemoryRepository<T> {
         return item;
     }
 
+    protected T deleteWithId(UUID id, T item) {
+        logger.debug("Removing item {} in {} repository", id, item.getClass());
+        storedItems.remove(id, item);
+        return item;
+    }
+
     protected Optional<T> getOptional(Predicate<T> predicate) {
         return storedItems.values().stream().filter(predicate).findAny();
     }
