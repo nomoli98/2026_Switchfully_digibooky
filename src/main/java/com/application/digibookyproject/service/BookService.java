@@ -37,8 +37,6 @@ public class BookService {
 
     public Book createBook(PostBookRequest request) {
 
-        // TODO : verif isbn
-
         verifyFilledIn(request.isbn(), "isbn");
         Pattern pattern = Pattern.compile(
                 "^(?=(?:\\D*\\d){13}$)97[89]([- ]?)\\d{1,5}\\1\\d{1,7}\\1\\d{1,7}\\1\\d$");
@@ -55,6 +53,10 @@ public class BookService {
                 new Author(request.authorFirstname(), request.authorLastname())
         );
         return bookRepository.save(book);
+    }
+
+    public Book deleteBook(UUID id) {
+        return bookRepository.deleteWithId(id, getBookById(id));
     }
 
     private void verifyFilledIn(String value, String parameterName) {

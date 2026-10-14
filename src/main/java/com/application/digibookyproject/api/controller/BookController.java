@@ -51,4 +51,9 @@ public class BookController {
     public BookDto registerBook(@RequestBody PostBookRequest postBookRequest) {
         return bookMapper.mapToDto(bookService.createBook(postBookRequest));
     }
+
+    @DeleteMapping(path = "/{id}")
+    public BookDto deleteBook(@PathVariable UUID id) {
+        return bookMapper.mapToDto(bookService.deleteBook(id));
+    }
 }
