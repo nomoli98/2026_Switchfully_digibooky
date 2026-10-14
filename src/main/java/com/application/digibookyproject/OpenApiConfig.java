@@ -13,12 +13,8 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI libraryOpenAPI() {
-        return new OpenAPI()
-                .info(new Info()
-                              .title("Digibooky")
-                              .description("First group project - Switchfully")
-                              .version("1.0.0"))
-                .servers(List.of(
-                        new Server().url("http://localhost:8080").description("Local")));
+        return new OpenAPI().info(new Info().title("Digibooky").description(
+                "First group project - Switchfully").version("1.0.0")).servers(List.of(new Server().url(
+                "http://localhost:8080").description("Local")));
     }
 }

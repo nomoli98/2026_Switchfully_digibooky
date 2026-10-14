@@ -19,8 +19,10 @@ public class BookController {
     private final BookMapper bookMapper;
     private final SecurityService securityService;
 
-    public BookController(BookService bookService, BookMapper bookMapper,
-                          SecurityService securityService
+    public BookController(
+            BookService bookService,
+            BookMapper bookMapper,
+            SecurityService securityService
                          ) {
         this.bookService = bookService;
         this.bookMapper = bookMapper;
@@ -50,8 +52,10 @@ public class BookController {
     }
 
     @PostMapping
-    public BookDto registerBook(@RequestBody PostBookRequest postBookRequest,
-                                @RequestHeader(value = "Authorization", required = false) String email ) {
+    public BookDto registerBook(
+            @RequestBody PostBookRequest postBookRequest,
+            @RequestHeader(value = "Authorization", required = false) String email
+                               ) {
         securityService.validateAuthorization(email, Permission.REGISTER_BOOK);
         return bookMapper.mapToDto(bookService.createBook(postBookRequest));
     }

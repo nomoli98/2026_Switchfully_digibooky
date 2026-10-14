@@ -7,13 +7,11 @@ public enum Role {
             Permission.REGISTER_ADMIN,
             Permission.VIEW_MEMBERS,
             Permission.REGISTER_LIBRARIAN
-    )),
-    LIBRARIAN(List.of(
-            Permission.REGISTER_BOOK
-    )),
+                 )),
+    LIBRARIAN(List.of(Permission.REGISTER_BOOK)),
     MEMBER(List.of());
 
-    private final List<Permission>  permissions;
+    private final List<Permission> permissions;
 
     Role(List<Permission> permissions) {
         this.permissions = permissions;
