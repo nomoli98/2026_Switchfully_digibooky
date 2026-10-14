@@ -29,6 +29,7 @@ class MemberServiceTest {
 
 
     @Test
+    @DisplayName("Calling createMember with correct arguments returns the created member")
     void createMember_givenValidArguments_thenCreateNewMember() {
         CreateMemberRequest createMemberRequest = new CreateMemberRequest(
                 "Ron", "Reader", "ronreader@reading.com",
@@ -41,6 +42,7 @@ class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("Calling createMember with email not matching regex throws BadRequestException")
     void createMember_givenInvalidEmail_thenThrowsException() {
         CreateMemberRequest dto = new CreateMemberRequest(
                 "Ron", "Reader", "ronreader-reading.com",

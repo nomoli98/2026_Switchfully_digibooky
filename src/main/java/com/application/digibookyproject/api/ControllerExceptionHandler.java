@@ -1,8 +1,8 @@
 package com.application.digibookyproject.api;
 
 import com.application.digibookyproject.service.exception.BadRequestException;
-import com.application.digibookyproject.service.exception.BookNotFoundException;
 import com.application.digibookyproject.service.exception.ConflictException;
+import com.application.digibookyproject.service.exception.NotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +19,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(ControllerExceptionHandler.class);
 
     // Expected client error → WARN, message is enough (no stack trace)
-    @ExceptionHandler(BookNotFoundException.class)
-    protected void bookNotFound(BookNotFoundException ex, HttpServletResponse response) throws IOException {
+    @ExceptionHandler(NotFoundException.class)
+    protected void bookNotFound(NotFoundException ex, HttpServletResponse response) throws IOException {
         logger.warn("Book not found: {}", ex.getMessage());
         response.sendError(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }

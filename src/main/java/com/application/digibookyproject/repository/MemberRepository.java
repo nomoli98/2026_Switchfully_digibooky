@@ -12,14 +12,10 @@ public class MemberRepository extends InMemoryRepository<Member> {
     }
 
     public Optional<Member> getMemberWithInss(String inss) {
-        return getAll().stream()
-                .filter(member -> inss.equals(member.getInss()))
-                .findAny();
+        return getOptional(member -> inss.equals(member.getInss()));
     }
 
     public Optional<Member> getMemberWithEmail(String email) {
-        return getAll().stream()
-                .filter(member -> email.equals(member.getEmail()))
-                .findAny();
+        return getOptional(member -> email.equals(member.getEmail()));
     }
 }

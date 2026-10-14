@@ -4,7 +4,7 @@ import com.application.digibookyproject.service.exception.NotFoundException;
 import com.application.digibookyproject.service.request.BookFilterQueryRequest;
 import com.application.digibookyproject.domain.Book;
 import com.application.digibookyproject.repository.BookRepository;
-import com.application.digibookyproject.service.filter.BookFilter;
+import com.application.digibookyproject.service.predicate.BookPredicate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,10 +20,10 @@ public class BookService {
     }
 
     public List<Book> getAllBooks(BookFilterQueryRequest queryDto) {
-        BookFilter filter = new BookFilter(queryDto);
+        BookPredicate filter = new BookPredicate(queryDto);
         return bookRepository.getAll()
                              .stream()
-                             .filter(book -> filter.applyFilters(book))
+                             .filter(filter::applyFilters)
                              .toList();
     }
 

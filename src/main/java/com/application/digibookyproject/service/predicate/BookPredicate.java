@@ -1,12 +1,12 @@
-package com.application.digibookyproject.service.filter;
+package com.application.digibookyproject.service.predicate;
 
 import com.application.digibookyproject.service.request.BookFilterQueryRequest;
 import com.application.digibookyproject.domain.Book;
 
-public class BookFilter {
-    private BookFilterQueryRequest dto;
+public class BookPredicate {
+    private final BookFilterQueryRequest dto;
 
-    public BookFilter(BookFilterQueryRequest dto) {
+    public BookPredicate(BookFilterQueryRequest dto) {
         this.dto = dto;
     }
 

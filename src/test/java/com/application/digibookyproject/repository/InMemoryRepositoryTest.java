@@ -2,6 +2,8 @@ package com.application.digibookyproject.repository;
 
 import com.application.digibookyproject.domain.Author;
 import com.application.digibookyproject.domain.Book;
+import com.application.digibookyproject.domain.Member;
+import com.application.digibookyproject.factory.MemberTestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -50,5 +52,21 @@ class InMemoryRepositoryTest {
 
         List<Book> resultBooks = bookRepository.getAll();
         assertThat(List.of(book, book1)).hasSameElementsAs(resultBooks);
+    }
+
+    @Test
+    @DisplayName("getting an optional when predicate is valid returns a member")
+    void getOptional_whenPredicateIsValid_thenReturnMember() {
+        InMemoryRepository<Member> repository = MemberTestData.createRepository(List.of());
+
+        assertThat(repository.getOptional(member -> member.getLastname().equals("Willems")).isPresent()).isTrue();
+    }
+
+    @Test
+    @DisplayName("getting an optional when predicate is invalid returns a member")
+    void getOptional_whenPredicateIsInvalid_thenReturnMember() {
+        InMemoryRepository<Member> repository = MemberTestData.createRepository(List.of());
+
+        assertThat(repository.getOptional(member -> member.getLastname().equals("Jan")).isPresent()).isFalse();
     }
 }
