@@ -2,6 +2,7 @@ package com.application.digibookyproject.api.controller;
 
 import com.application.digibookyproject.api.dto.BookDto;
 import com.application.digibookyproject.domain.Book;
+import com.application.digibookyproject.domain.member.Permission;
 import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
 import com.application.digibookyproject.api.mapper.BookMapper;
 import com.application.digibookyproject.service.BookService;
@@ -48,7 +49,9 @@ public class BookController {
     }
 
     @PostMapping
-    public BookDto registerBook(@RequestBody PostBookRequest postBookRequest) {
+    public BookDto registerBook(@RequestBody PostBookRequest postBookRequest,
+                                @RequestHeader(value = "Authorization", required = false) String email ) {
+        securityService.validateAuthorization(email, Permission.REGISTER_BOOK);
         return bookMapper.mapToDto(bookService.createBook(postBookRequest));
     }
 }
