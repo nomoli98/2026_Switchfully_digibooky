@@ -34,6 +34,30 @@ class PostBookServiceTest {
     }
 
     @Test
+    @DisplayName("Create Book with a correct isbn with spaces")
+    void givenValidRequestWithSpaces_whenCallingCreateBook_thenABookIsReturned() {
+        request = new PostBookRequest(
+                "978 1 1234 5678 9",
+                "le title",
+                "le author firstname",
+                "le author last name"
+        );
+        Assertions.assertThat(service.createBook(request).getIsbn()).isEqualTo("978 1 1234 5678 9");
+    }
+
+    @Test
+    @DisplayName("Create Book with a correct isbn without -")
+    void givenValidRequestWithOnlyInt_whenCallingCreateBook_thenABookIsReturned() {
+        request = new PostBookRequest(
+                "9781123456789",
+                "le title",
+                "le author firstname",
+                "le author last name"
+        );
+        Assertions.assertThat(service.createBook(request).getIsbn()).isEqualTo("9781123456789");
+    }
+
+    @Test
     @DisplayName("Create Book with an empty isbn in the request")
     void givenEmptyIsbnInRequest_whenCallingCreateBook_thenAnExceptionIsThrown() {
         request = new PostBookRequest(
