@@ -1,9 +1,11 @@
 package com.application.digibookyproject.api.controller;
 
 import com.application.digibookyproject.api.dto.BookDto;
-import com.application.digibookyproject.service.request.BookFilterQueryRequest;
+import com.application.digibookyproject.domain.Book;
+import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
 import com.application.digibookyproject.api.mapper.BookMapper;
 import com.application.digibookyproject.service.BookService;
+import com.application.digibookyproject.service.request.PostBookRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,16 +27,28 @@ public class BookController {
             @RequestParam(required = false) String isbn,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String lastName) {
-        BookFilterQueryRequest bookFilterQueryDto = new BookFilterQueryRequest(isbn, title, firstName, lastName);
+            @RequestParam(required = false) String lastName
+                                    ) {
+        GetBooksWithFilterRequest bookFilterQueryDto = new GetBooksWithFilterRequest(
+                isbn,
+                title,
+                firstName,
+                lastName
+        );
         return bookService.getAllBooks(bookFilterQueryDto)
-                .stream()
-                .map(bookMapper::mapToDto)
-                .toList();
+                          .stream()
+                          .map(bookMapper::mapToDto)
+                          .toList();
+
     }
 
     @GetMapping(path = "/{id}")
-    public BookDto getBookById(@PathVariable UUID id){
+    public BookDto getBookById(@PathVariable UUID id) {
         return bookMapper.mapToDto(bookService.getBookById(id));
+    }
+
+    @PostMapping
+    public BookDto registerBook(@RequestBody PostBookRequest postBookRequest) {
+        return bookMapper.mapToDto(bookService.createBook(postBookRequest));
     }
 }

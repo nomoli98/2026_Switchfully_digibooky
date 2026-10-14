@@ -3,7 +3,7 @@ package com.application.digibookyproject.api.controller;
 import com.application.digibookyproject.api.dto.MemberDto;
 import com.application.digibookyproject.api.mapper.MemberMapper;
 import com.application.digibookyproject.service.MemberService;
-import com.application.digibookyproject.service.request.CreateMemberRequest;
+import com.application.digibookyproject.service.request.PostMemberRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +21,7 @@ public class MemberController {
     }
 
     @PostMapping
-    public MemberDto createMember(@RequestBody CreateMemberRequest createMemberRequest) {
-        return memberMapper.mapToDto(memberService.createMember(createMemberRequest));
+    public MemberDto createMember(@RequestBody PostMemberRequest postMemberRequest) {
+        return memberMapper.mapToDto(memberService.createMember(postMemberRequest));
     }
 }

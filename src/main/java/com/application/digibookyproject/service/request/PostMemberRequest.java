@@ -1,6 +1,6 @@
 package com.application.digibookyproject.service.request;
 
-public record CreateMemberRequest(
+public record PostMemberRequest(
         String firstname,
         String lastname,
         String email,
@@ -9,5 +9,5 @@ public record CreateMemberRequest(
         int postalCode,
         String city,
         String inss
-){
+) {
 }
