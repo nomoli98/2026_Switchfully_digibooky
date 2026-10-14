@@ -43,12 +43,11 @@ public class BookService {
         Pattern pattern = Pattern.compile(
                 "^(?=(?:\\D*\\d){13}$)97[89]([- ]?)\\d{1,5}\\1\\d{1,7}\\1\\d{1,7}\\1\\d$");
         Matcher matcher = pattern.matcher(request.isbn());
-        if(!matcher.find()) throw BadRequestException.invalidIsbn(request.isbn());
+        if (!matcher.find()) throw BadRequestException.invalidIsbn(request.isbn());
 
         verifyFilledIn(request.title(), "title");
         verifyFilledIn(request.authorFirstname(), "author Firstname");
         verifyFilledIn(request.authorLastname(), "author Lastname");
-
 
         Book book = new Book(
                 request.isbn(),
