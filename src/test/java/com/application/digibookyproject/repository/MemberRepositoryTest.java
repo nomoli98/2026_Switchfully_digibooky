@@ -13,7 +13,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MemberRepositoryTest {
     private MemberRepository memberRepository;
-    private final Member storedJulie = new Member("Martin", "Julie", "julie.martin@example.com", "Nieuwstraat", "18", 2000, "Antwerpen", "99.03.14-890.12");
+    private final Member storedJulie = new Member(
+            "Martin",
+            "Julie",
+            "julie.martin@example.com",
+            "Nieuwstraat",
+            "18",
+            2000,
+            "Antwerpen",
+            "99.03.14-890.12"
+    );
 
     @BeforeEach
     void setUp() {
@@ -38,7 +47,8 @@ class MemberRepositoryTest {
     @Test
     @DisplayName("getMemberWithEmail returns a member when present")
     void getMemberWithEmail_givenMemberExists_thenReturnExistingMember() {
-        Optional<Member> julieOptional = memberRepository.getMemberWithEmail("julie.martin@example.com");
+        Optional<Member> julieOptional = memberRepository.getMemberWithEmail(
+                "julie.martin@example.com");
         Member julie = julieOptional.orElseThrow();
         assertEquals(storedJulie, julie);
     }
@@ -46,7 +56,8 @@ class MemberRepositoryTest {
     @Test
     @DisplayName("getMemberWithEmail returns an empty optional when not present")
     void getMemberWithEmail_givenMemberDoesNotExist_thenReturnEmptyOptional() {
-        Optional<Member> julieOptional = memberRepository.getMemberWithEmail("marco.polo@example.com");
+        Optional<Member> julieOptional = memberRepository.getMemberWithEmail(
+                "marco.polo@example.com");
         assertTrue(julieOptional.isEmpty());
     }
 }

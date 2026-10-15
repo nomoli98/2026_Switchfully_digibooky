@@ -7,7 +7,7 @@ public class NotFoundException extends RuntimeException {
         super(message);
     }
 
-    public static NotFoundException bookNotFound(UUID id){
+    public static NotFoundException bookNotFound(UUID id) {
         return new NotFoundException("The book with the id %s could not be found".formatted(id));
     }
 }

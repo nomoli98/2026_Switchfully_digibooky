@@ -16,7 +16,11 @@ public class InMemoryRepository<T> {
     private final Map<UUID, T> storedItems = new ConcurrentHashMap<>();
 
     public List<T> getAll() {
-        logger.trace("Fetching all items ({} {} stored)", storedItems.size(), storedItems.getClass());
+        logger.trace(
+                "Fetching all items ({} {} stored)",
+                storedItems.size(),
+                storedItems.getClass()
+        );
         return storedItems.values().stream().toList();
     }
 
@@ -28,6 +32,12 @@ public class InMemoryRepository<T> {
     protected T saveWithId(UUID id, T item) {
         logger.debug("Saving item {} in {} repository", id, item.getClass());
         storedItems.put(id, item);
+        return item;
+    }
+
+    public T deleteWithId(UUID id, T item) {
+        logger.debug("Removing item {} in {} repository", id, item.getClass());
+        storedItems.remove(id, item);
         return item;
     }
 
