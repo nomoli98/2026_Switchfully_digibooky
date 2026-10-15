@@ -5,8 +5,8 @@ import java.util.UUID;
 
 public class Book {
     private final String isbn;
-    private final String title;
-    private final Author author;
+    private String title;
+    private Author author;
     private final UUID id;
 
     public Book(String isbn, String title, Author author) {
@@ -32,10 +32,18 @@ public class Book {
         return id;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book) o;
+        Book book = (Book)o;
         return Objects.equals(id, book.id);
     }
 
@@ -46,11 +54,6 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "isbn='" + isbn + '\'' +
-                ", title='" + title + '\'' +
-                ", author=" + author +
-                ", id=" + id +
-                '}';
+        return "Book{" + "isbn='" + isbn + '\'' + ", title='" + title + '\'' + ", author=" + author + ", id=" + id + '}';
     }
 }

@@ -6,7 +6,8 @@ public enum Permission {
     VIEW_MEMBERS("view members"),
     REGISTER_ADMIN("register a new admin"),
     REGISTER_LIBRARIAN("register a new librarian"),
-    REGISTER_BOOK("register a new book");
+    REGISTER_BOOK("register a new book"),
+    DELETE_BOOK("remove a book");
 
     private final ForbiddenException exception;
 

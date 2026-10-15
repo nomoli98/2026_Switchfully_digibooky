@@ -71,6 +71,10 @@ public class Member {
         return id;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
     public void setRole(Role role) {
         this.role = role;
     }

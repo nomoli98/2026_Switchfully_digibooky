@@ -1,6 +1,8 @@
 package com.application.digibookyproject.service.request;
 
-public record CreateMemberRequest(
+import com.application.digibookyproject.domain.member.Role;
+
+public record PostMemberRequest(
         String firstname,
         String lastname,
         String email,
@@ -8,6 +10,6 @@ public record CreateMemberRequest(
         String streetnumber,
         int postalCode,
         String city,
-        String inss
-){
-}
+        String inss,
+        Role role
+) { }
