@@ -6,6 +6,7 @@ public record BookDto(
         UUID id,
         String isbn,
         String title,
-        AuthorDto authorDto
+        AuthorDto authorDto,
+        LoanDto loanDto
 ) {
 }

@@ -1,9 +1,10 @@
 package com.application.digibookyproject.service;
 
-import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
 import com.application.digibookyproject.domain.Author;
 import com.application.digibookyproject.domain.Book;
 import com.application.digibookyproject.repository.BookRepository;
+import com.application.digibookyproject.repository.LoanRepository;
+import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,10 +16,12 @@ class BookServicePredicateTest {
     Book book1, book2, book3, book4;
     BookRepository repository;
     BookService service;
+    LoanRepository loanRepository;
 
     @BeforeEach
     void initRepository() {
         repository = new BookRepository();
+        loanRepository = new LoanRepository();
 
         book1 = new Book("le isbn", "le title", new Author("Le", "author"));
         book2 = new Book("la isbn", "la title", new Author("La", "auth0r"));
@@ -29,8 +32,6 @@ class BookServicePredicateTest {
         repository.save(book2);
         repository.save(book3);
         repository.save(book4);
-
-        service = new BookService(repository);
     }
 
     @Test
@@ -83,7 +84,7 @@ class BookServicePredicateTest {
                 book2,
                 book3,
                 book4
-                                                                                ));
+        ));
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.application.digibookyproject.api.controller;
 
-import com.application.digibookyproject.api.dto.LoanDto;
+import com.application.digibookyproject.api.dto.CreateLoanDto;
 import com.application.digibookyproject.api.mapper.LoanMapper;
 import com.application.digibookyproject.service.LoanService;
 import com.application.digibookyproject.service.request.PostLoanRequest;
@@ -20,7 +20,7 @@ public class LoanController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public LoanDto createLoan(@RequestBody PostLoanRequest postLoanRequest) {
+    public CreateLoanDto createLoan(@RequestBody PostLoanRequest postLoanRequest) {
         return loanMapper.mapToDto(loanService.createLoan(postLoanRequest));
     }
 }
