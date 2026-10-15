@@ -10,6 +10,7 @@ import com.application.digibookyproject.service.request.PostLoanRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Service
 public class LoanService {
@@ -41,6 +42,11 @@ public class LoanService {
                 LocalDate.now().plusWeeks(Loan.DEFAULT_LOAN_DURATION_IN_WEEKS)
         );
         return loanRepository.save(loan);
+    }
+
+    public Loan closeLoan(UUID loanId){
+        Loan existingLoan = loanRepository.get(loanId).orElseThrow(() -> NotFoundException.loanNotFound(loanId));
+        return loanRepository.deleteWithId(loanId, existingLoan);
     }
 
     private void verifyFilledIn(String value, String parameterName) {
