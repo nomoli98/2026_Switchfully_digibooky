@@ -1,14 +1,13 @@
 package com.application.digibookyproject.service;
 
 import com.application.digibookyproject.repository.BookRepository;
+import com.application.digibookyproject.repository.LoanRepository;
 import com.application.digibookyproject.service.exception.BadRequestException;
 import com.application.digibookyproject.service.request.PostBookRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PostBookServiceTest {
     BookRepository repository;
@@ -19,7 +18,7 @@ class PostBookServiceTest {
     @BeforeEach
     void initRepository() {
         repository = new BookRepository();
-        service = new BookService(repository);
+        service = new BookService(repository, new LoanRepository());
     }
 
     @Test

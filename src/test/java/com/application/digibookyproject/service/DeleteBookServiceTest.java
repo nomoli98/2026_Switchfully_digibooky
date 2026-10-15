@@ -3,6 +3,7 @@ package com.application.digibookyproject.service;
 import com.application.digibookyproject.domain.Author;
 import com.application.digibookyproject.domain.Book;
 import com.application.digibookyproject.repository.BookRepository;
+import com.application.digibookyproject.repository.LoanRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DeleteBookServiceTest {
 
@@ -23,7 +24,7 @@ class DeleteBookServiceTest {
     @BeforeEach
     void initRepository() {
         repository = new BookRepository();
-        service = new BookService(repository);
+        service = new BookService(repository, new LoanRepository());
         book = new Book(
                 "978-1-1234-5678-9",
                 "le title",
@@ -47,7 +48,6 @@ class DeleteBookServiceTest {
     void givenNotExistingBookToDelete_whenCallingDeletingBook_thenThrowsException() {
         Assertions.assertThatThrownBy(() -> service.deleteBook(UUID.randomUUID())).isInstanceOf(Exception.class);
     }
-
 
 
 }
