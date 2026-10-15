@@ -10,7 +10,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
-public class InMemoryRepository<T> {
+public abstract class InMemoryRepository<T> {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final Map<UUID, T> storedItems = new ConcurrentHashMap<>();
