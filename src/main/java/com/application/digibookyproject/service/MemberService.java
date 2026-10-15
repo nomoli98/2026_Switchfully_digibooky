@@ -4,8 +4,8 @@ import com.application.digibookyproject.domain.member.Member;
 import com.application.digibookyproject.repository.MemberRepository;
 import com.application.digibookyproject.service.exception.BadRequestException;
 import com.application.digibookyproject.service.exception.ConflictException;
-import org.apache.commons.validator.routines.EmailValidator;
 import com.application.digibookyproject.service.request.PostMemberRequest;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

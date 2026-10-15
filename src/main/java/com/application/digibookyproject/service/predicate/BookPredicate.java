@@ -1,7 +1,7 @@
 package com.application.digibookyproject.service.predicate;
 
-import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
 import com.application.digibookyproject.domain.Book;
+import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
 
 public class BookPredicate {
     private final GetBooksWithFilterRequest dto;

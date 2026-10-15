@@ -42,7 +42,9 @@ public class MemberController {
 
     @SecurityRequirement(name = "Authorization")
     @GetMapping
-    public List<MemberDto> getMembers(@Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email) {
+    public List<MemberDto> getMembers(
+            @Parameter(hidden = true)
+            @RequestHeader(value = "Authorization", required = false) String email) {
         securityService.validateAuthorization(email, Permission.VIEW_MEMBERS);
         return memberService.getAllMembers().stream()
                 .map(memberMapper::mapToDto)

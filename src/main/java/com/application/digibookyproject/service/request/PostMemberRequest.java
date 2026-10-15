@@ -12,4 +12,5 @@ public record PostMemberRequest(
         String city,
         String inss,
         Role role
-) { }
+) {
+}
