@@ -13,15 +13,7 @@ public class MemberRepository extends InMemoryRepository<Member> {
     }
 
     public MemberRepository() {
-        Member admin = new Member(
-                "admin",
-                "admin",
-                "admin@example.com",
-                null,
-                null,
-                0,
-                null,
-                null);
+        Member admin = new Member("admin", "admin", "admin@example.com", null, null, 0, null, null);
         admin.setRole(Role.ADMIN);
         save(admin);
     }
