@@ -8,7 +8,8 @@ public enum Permission {
     REGISTER_LIBRARIAN("register a new librarian"),
     REGISTER_BOOK("register a new book"),
     DELETE_BOOK("remove a book"),
-    UPDATE_BOOK("update a book");
+    UPDATE_BOOK("update a book"),
+    VIEW_LOANS("view loans for a member");
 
     private final ForbiddenException exception;
 
