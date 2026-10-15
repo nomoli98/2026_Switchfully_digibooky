@@ -7,6 +7,7 @@ import com.application.digibookyproject.service.request.GetBooksWithFilterReques
 import com.application.digibookyproject.api.mapper.BookMapper;
 import com.application.digibookyproject.service.BookService;
 import com.application.digibookyproject.service.request.PostBookRequest;
+import com.application.digibookyproject.service.request.PutBookRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,6 +42,12 @@ public class BookController {
     public BookDto registerBook(@RequestBody PostBookRequest postBookRequest, @RequestHeader(value = "Authorization", required = false) String email) {
         securityService.validateAuthorization(email, Permission.REGISTER_BOOK);
         return bookMapper.mapToDto(bookService.createBook(postBookRequest));
+    }
+
+    @PutMapping
+    public BookDto updateBook(@RequestBody PutBookRequest putBookRequest, @RequestHeader(value = "Authorization", required = false) String email) {
+        securityService.validateAuthorization(email, Permission.UPDATE_BOOK);
+        return bookMapper.mapToDto(bookService.updateBook(putBookRequest));
     }
 
     @DeleteMapping(path = "/{id}")
