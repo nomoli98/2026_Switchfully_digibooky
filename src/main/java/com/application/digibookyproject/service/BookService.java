@@ -5,9 +5,10 @@ import com.application.digibookyproject.service.exception.BadRequestException;
 import com.application.digibookyproject.service.exception.NotFoundException;
 import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
 import com.application.digibookyproject.domain.Book;
-import com.application.digibookyproject.repository.BookRepository;
 import com.application.digibookyproject.service.predicate.BookPredicate;
+import com.application.digibookyproject.repository.BookRepository;
 import com.application.digibookyproject.service.request.PostBookRequest;
+import com.application.digibookyproject.service.request.PutBookRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -47,7 +48,6 @@ public class BookService {
     }
 
     public Book createBook(PostBookRequest request) {
-
         verifyFilledIn(request.isbn(), "isbn");
         if (!checkIsbn(request.isbn())) throw BadRequestException.invalidIsbn(request.isbn());
         verifyFilledIn(request.title(), "title");
@@ -59,6 +59,20 @@ public class BookService {
                 request.title(),
                 new Author(request.authorFirstname(), request.authorLastname())
         );
+        return bookRepository.save(book);
+    }
+    
+    public Book updateBook(PutBookRequest request) {
+        verifyFilledIn(request.title(), "title");
+        verifyFilledIn(request.authorFirstName(), "author Firstname");
+        verifyFilledIn(request.authorLastName(), "author Lastname");
+
+        Book book = bookRepository.get(request.id())
+                .orElseThrow(() -> NotFoundException.bookNotFound(request.id()));
+
+        book.setTitle(request.title());
+        book.setAuthor(new Author(request.authorFirstName(), request.authorLastName()));
+
         return bookRepository.save(book);
     }
 
