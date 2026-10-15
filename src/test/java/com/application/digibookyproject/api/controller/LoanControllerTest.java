@@ -4,6 +4,7 @@ import com.application.digibookyproject.api.dto.LoanDto;
 import com.application.digibookyproject.domain.Book;
 import com.application.digibookyproject.domain.Loan;
 import com.application.digibookyproject.domain.member.Member;
+import com.application.digibookyproject.domain.member.Role;
 import com.application.digibookyproject.service.BookService;
 import com.application.digibookyproject.service.MemberService;
 import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
@@ -19,10 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDate;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class LoanControllerTest {
     @LocalServerPort
     private int port;
@@ -50,7 +53,8 @@ class LoanControllerTest {
                 "4A",
                 8000,
                 "Readsville",
-                "12-345-6789");
+                "12-345-6789",
+                Role.MEMBER);
         memberService.createMember(memberRequest);
         Book book = bookService.getAllBooks(new GetBooksWithFilterRequest(null, null, null, null)).getFirst();
         Member member = memberService.getAllMembers().getFirst();
