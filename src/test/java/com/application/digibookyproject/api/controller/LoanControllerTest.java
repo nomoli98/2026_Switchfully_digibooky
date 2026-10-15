@@ -1,5 +1,6 @@
 package com.application.digibookyproject.api.controller;
 
+import com.application.digibookyproject.api.dto.LoanDto;
 import com.application.digibookyproject.domain.Book;
 import com.application.digibookyproject.domain.Loan;
 import com.application.digibookyproject.domain.member.Member;
@@ -56,7 +57,7 @@ class LoanControllerTest {
         PostLoanRequest request = new PostLoanRequest(member.getEmail(), book.getId());
 
         //When
-        Loan loan = RestAssured
+        LoanDto loan = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
@@ -68,12 +69,12 @@ class LoanControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
-                .as(Loan.class);
+                .as(LoanDto.class);
 
         //Then
-        Assertions.assertThat(loan.getMemberId()).isEqualTo(member.getId());
-        Assertions.assertThat(loan.getBookId()).isEqualTo(book.getId());
-        Assertions.assertThat(loan.getDueDate())
+        Assertions.assertThat(loan.memberId()).isEqualTo(member.getId());
+        Assertions.assertThat(loan.bookId()).isEqualTo(book.getId());
+        Assertions.assertThat(loan.dueDate())
                 .isEqualTo(LocalDate.now().plusWeeks(Loan.DEFAULT_LOAN_DURATION_IN_WEEKS));
     }
 }

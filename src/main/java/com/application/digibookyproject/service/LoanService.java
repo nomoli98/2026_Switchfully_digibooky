@@ -34,8 +34,8 @@ public class LoanService {
         Book book = bookService.getBookById(request.bookId());
 
         Loan loan = new Loan(
-                member.getId(),
-                book.getId(),
+                member,
+                book,
                 LocalDate.now().plusWeeks(Loan.DEFAULT_LOAN_DURATION_IN_WEEKS)
         );
         return loanRepository.save(loan);
