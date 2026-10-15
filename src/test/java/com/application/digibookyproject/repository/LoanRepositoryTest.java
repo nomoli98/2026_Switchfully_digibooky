@@ -43,7 +43,7 @@ class LoanRepositoryTest {
     @DisplayName("getting a loan with a book id")
     class GetLoan {
         @Test
-        @DisplayName("when loan exists")
+        @DisplayName("when loan exists returns a Loan")
         void givenLoanExists_whenGettingTheLoanWithABookId_thenReturnLoan() {
             //Given
             loanRepository.save(loan);
