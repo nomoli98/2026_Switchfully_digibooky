@@ -4,6 +4,7 @@ import com.application.digibookyproject.domain.member.Member;
 import com.application.digibookyproject.repository.MemberRepository;
 import com.application.digibookyproject.service.exception.BadRequestException;
 import com.application.digibookyproject.service.exception.ConflictException;
+import org.apache.commons.validator.routines.EmailValidator;
 import com.application.digibookyproject.service.request.PostMemberRequest;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,11 @@ import java.util.List;
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final EmailValidator emailValidator;
 
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
+        emailValidator = EmailValidator.getInstance();
     }
 
     public Member createMember(
@@ -28,8 +31,7 @@ public class MemberService {
             throw ConflictException.duplicateEmail(request.email());
         if (memberRepository.getMemberWithInss(request.inss()).isPresent())
             throw ConflictException.duplicateInss(request.inss());
-        if (!request.email().matches("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))
-            throw BadRequestException.invalidEmail(request.email());
+        if (!emailValidator.isValid(request.email())) throw BadRequestException.invalidEmail(request.email());
 
         Member member = new Member(
                 request.lastname(),
