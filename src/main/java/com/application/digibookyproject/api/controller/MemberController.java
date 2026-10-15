@@ -29,20 +29,20 @@ public class MemberController {
         this.securityService = securityService;
     }
 
-    @SecurityRequirement(name = "authorization")
+    @SecurityRequirement(name = "Authorization")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public MemberDto createMember(
-            @Parameter(hidden = true) @RequestHeader(value = "authorization", required = false) String email,
+            @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email,
             @RequestBody PostMemberRequest postMemberRequest
     ) {
         securityService.validateAuthorization(email, Permission.REGISTER_LIBRARIAN);
         return memberMapper.mapToDto(memberService.createMember(postMemberRequest));
     }
 
-    @SecurityRequirement(name = "authorization")
+    @SecurityRequirement(name = "Authorization")
     @GetMapping
-    public List<MemberDto> getMembers(@Parameter(hidden = true) @RequestHeader(value = "authorization", required = false) String email) {
+    public List<MemberDto> getMembers(@Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email) {
         securityService.validateAuthorization(email, Permission.VIEW_MEMBERS);
         return memberService.getAllMembers().stream()
                 .map(memberMapper::mapToDto)

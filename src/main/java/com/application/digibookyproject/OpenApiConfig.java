@@ -13,10 +13,10 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .components(new Components()
-                        .addSecuritySchemes("authorization",
+                        .addSecuritySchemes("Authorization",
                                 new SecurityScheme()
                                         .type(SecurityScheme.Type.APIKEY)
                                         .in(SecurityScheme.In.HEADER)
-                                        .name("authorization")));
+                                        .name("Authorization")));
     }
 }

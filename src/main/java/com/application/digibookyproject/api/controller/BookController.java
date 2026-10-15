@@ -40,23 +40,23 @@ public class BookController {
         return bookMapper.mapToDto(bookService.getBookById(id));
     }
 
-    @SecurityRequirement(name = "authorization")
+    @SecurityRequirement(name = "Authorization")
     @PostMapping
-    public BookDto registerBook(@RequestBody PostBookRequest postBookRequest, @Parameter(hidden = true) @RequestHeader(value = "authorization", required = false) String email) {
+    public BookDto registerBook(@RequestBody PostBookRequest postBookRequest, @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email) {
         securityService.validateAuthorization(email, Permission.REGISTER_BOOK);
         return bookMapper.mapToDto(bookService.createBook(postBookRequest));
     }
 
-    @SecurityRequirement(name = "authorization")
+    @SecurityRequirement(name = "Authorization")
     @PutMapping
-    public BookDto updateBook(@RequestBody PutBookRequest putBookRequest, @Parameter(hidden = true)  @RequestHeader(value = "authorization", required = false) String email) {
+    public BookDto updateBook(@RequestBody PutBookRequest putBookRequest, @Parameter(hidden = true)  @RequestHeader(value = "Authorization", required = false) String email) {
         securityService.validateAuthorization(email, Permission.UPDATE_BOOK);
         return bookMapper.mapToDto(bookService.updateBook(putBookRequest));
     }
 
-    @SecurityRequirement(name = "authorization")
+    @SecurityRequirement(name = "Authorization")
     @DeleteMapping(path = "/{id}")
-    public BookDto deleteBook(@PathVariable UUID id, @Parameter(hidden = true) @RequestHeader(value = "authorization", required = false) String email) {
+    public BookDto deleteBook(@PathVariable UUID id, @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email) {
         securityService.validateAuthorization(email, Permission.DELETE_BOOK);
         return bookMapper.mapToDto(bookService.deleteBook(id));
     }
