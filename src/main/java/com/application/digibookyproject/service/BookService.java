@@ -34,7 +34,7 @@ public class BookService {
         return book.get();
     }
 
-    private Boolean checkIsbn(String isbn) {
+    private boolean checkIsbn(String isbn) {
         if (isbn.length() != 17) return false;
         String[] array = isbn.split("-");
         if (array.length != 5) return false;

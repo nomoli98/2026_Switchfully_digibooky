@@ -1,6 +1,6 @@
 package com.application.digibookyproject.api.controller;
 
-import com.application.digibookyproject.domain.Member;
+import com.application.digibookyproject.domain.member.Member;
 import com.application.digibookyproject.service.request.PostMemberRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
