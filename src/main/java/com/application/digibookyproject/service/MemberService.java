@@ -41,6 +41,7 @@ public class MemberService {
                 request.city(),
                 request.inss()
         );
+        member.setRole(request.role());
         return memberRepository.save(member);
     }
 

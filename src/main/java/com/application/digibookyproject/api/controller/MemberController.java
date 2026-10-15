@@ -29,7 +29,11 @@ public class MemberController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MemberDto createMember(@RequestBody PostMemberRequest postMemberRequest) {
+    public MemberDto createMember(
+            @RequestHeader(value = "Authorization", required = false) String email,
+            @RequestBody PostMemberRequest postMemberRequest
+    ) {
+        securityService.validateAuthorization(email, Permission.REGISTER_LIBRARIAN);
         return memberMapper.mapToDto(memberService.createMember(postMemberRequest));
     }
 

@@ -1,5 +1,7 @@
 package com.application.digibookyproject.api.dto;
 
+import com.application.digibookyproject.domain.member.Role;
+
 import java.util.UUID;
 
 public record MemberDto(
@@ -10,6 +12,7 @@ public record MemberDto(
         String streetnumber,
         int postalCode,
         String city,
-        UUID id
+        UUID id,
+        Role role
 ) {
 }

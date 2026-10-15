@@ -1,6 +1,7 @@
 package com.application.digibookyproject.service;
 
 import com.application.digibookyproject.domain.member.Member;
+import com.application.digibookyproject.domain.member.Role;
 import com.application.digibookyproject.factory.MemberTestData;
 import com.application.digibookyproject.repository.MemberRepository;
 import com.application.digibookyproject.service.exception.BadRequestException;
@@ -34,7 +35,7 @@ class MemberServiceTest {
         PostMemberRequest createMemberRequest = new PostMemberRequest(
                 "Ron", "Reader", "ronreader@reading.com",
                 "Read Street", "4A",
-                8000, "Readsville", "12-345-6789"
+                8000, "Readsville", "12-345-6789", Role.MEMBER
         );
 
         Member result = memberService.createMember(createMemberRequest);
@@ -47,7 +48,7 @@ class MemberServiceTest {
         PostMemberRequest dto = new PostMemberRequest(
                 "Ron", "Reader", "ronreader-reading.com",
                 "Read Street", "4A",
-                8000, "Readsville", "12-345-6789"
+                8000, "Readsville", "12-345-6789", Role.MEMBER
         );
 
         BadRequestException ex = assertThrows(
@@ -63,7 +64,7 @@ class MemberServiceTest {
                         new PostMemberRequest(
                                 "Ron", "Reader", null,
                                 "Read Street", "4A",
-                                8000, "Readsville", "12-345-6789"
+                                8000, "Readsville", "12-345-6789", Role.MEMBER
                         ),
                         "email", "Member parameter email is required"
                 ),
@@ -71,7 +72,7 @@ class MemberServiceTest {
                         new PostMemberRequest(
                                 "Ron", "Reader", "ronreader@reading.com",
                                 "Read Street", "4A",
-                                8000, "Readsville", null
+                                8000, "Readsville", null, Role.MEMBER
                         ),
                         "inss", "Member parameter inss is required"
                 ),
@@ -79,7 +80,7 @@ class MemberServiceTest {
                         new PostMemberRequest(
                                 "", "Reader", "ronreader@reading.com",
                                 "Read Street", "4A",
-                                8000, "Readsville", "12-345-6789"
+                                8000, "Readsville", "12-345-6789", Role.MEMBER
                         ),
                         "firstname", "Member parameter firstname is required"
                 ),
@@ -87,7 +88,7 @@ class MemberServiceTest {
                         new PostMemberRequest(
                                 "Ron", "Reader", "ronreader@reading.com",
                                 "Read Street", "4A",
-                                8000, "", "12-345-6789"
+                                8000, "", "12-345-6789", Role.MEMBER
                         ),
                         "city", "Member parameter city is required"
                 )
@@ -108,7 +109,7 @@ class MemberServiceTest {
                         new PostMemberRequest(
                                 "Ron", "Reader", "jan.peeters@example.com",
                                 "Read Street", "4A",
-                                8000, "Readsville", "12-345-6789"
+                                8000, "Readsville", "12-345-6789", Role.MEMBER
                         ),
                         "email", "A user with email jan.peeters@example.com already exists."
                 ),
@@ -116,7 +117,7 @@ class MemberServiceTest {
                         new PostMemberRequest(
                                 "Ron", "Reader", "ronreader@reading.com",
                                 "Read Street", "4A",
-                                8000, "Readsville", "90.07.22-234.56"
+                                8000, "Readsville", "90.07.22-234.56", Role.MEMBER
                         ),
                         "inss", "A user with inss number 90.07.22-234.56 already exists."
                 )
