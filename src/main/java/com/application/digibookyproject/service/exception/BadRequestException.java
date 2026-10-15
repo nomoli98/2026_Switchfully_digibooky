@@ -20,4 +20,8 @@ public class BadRequestException extends RuntimeException {
     public static BadRequestException invalidIsbn(String isbn) {
         return new BadRequestException("Given ISBN %s doesn't match ISBN pattern".formatted(isbn));
     }
+
+    public static BadRequestException loanParameterRequired(String parameter) {
+        return new BadRequestException("Loan parameter %s is required".formatted(parameter));
+    }
 }

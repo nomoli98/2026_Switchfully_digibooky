@@ -44,7 +44,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("Adding a member succesfully returns the correct response")
+    @DisplayName("Adding a member successfully returns the correct response")
     void postUser_givenRepositoryIsEmpty_thenReturnCreatedObject() {
         Member member = postUser(new PostMemberRequest(
                 "Ron", "Reader", "ronreader@reading.com",
@@ -60,7 +60,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("Adding a librarian succesfully returns the correct response")
+    @DisplayName("Adding a librarian successfully returns the correct response")
     void postLibrarian_givenRepositoryIsEmpty_thenReturnCreatedObject() {
         Member member = postUser(new PostMemberRequest(
                 "Ron", "Reader", "ronreader@reading.com",

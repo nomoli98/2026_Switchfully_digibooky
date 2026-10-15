@@ -13,6 +13,7 @@ public class MemberRepository extends InMemoryRepository<Member> {
     private final Logger logger = LoggerFactory.getLogger(MemberRepository.class);
 
     public Member save(Member member) {
+        logger.debug("Saving member with email {}", member.getEmail());
         return saveWithId(member.getId(), member);
     }
 
