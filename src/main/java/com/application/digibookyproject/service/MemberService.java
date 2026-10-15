@@ -2,11 +2,13 @@ package com.application.digibookyproject.service;
 
 import com.application.digibookyproject.domain.member.Member;
 import com.application.digibookyproject.repository.MemberRepository;
-import com.application.digibookyproject.service.request.PostMemberRequest;
 import com.application.digibookyproject.service.exception.BadRequestException;
 import com.application.digibookyproject.service.exception.ConflictException;
 import org.apache.commons.validator.routines.EmailValidator;
+import com.application.digibookyproject.service.request.PostMemberRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MemberService {
@@ -41,11 +43,16 @@ public class MemberService {
                 request.city(),
                 request.inss()
         );
+        member.setRole(request.role());
         return memberRepository.save(member);
     }
 
     private void verifyFilledIn(String value, String parameterName) {
         if (value == null || value.isEmpty())
             throw BadRequestException.memberParameterRequired(parameterName);
+    }
+
+    public List<Member> getAllMembers() {
+        return memberRepository.getAll();
     }
 }

@@ -21,7 +21,7 @@ class SecurityServiceTest {
                 Permission.REGISTER_ADMIN,
                 Permission.REGISTER_LIBRARIAN,
                 Permission.VIEW_MEMBERS
-                        ).map(Arguments::of);
+        ).map(Arguments::of);
     }
 
     @ParameterizedTest(name = "Admin user has permission {0}")
@@ -34,7 +34,7 @@ class SecurityServiceTest {
         Assertions.assertDoesNotThrow(() -> securityService.validateAuthorization(
                 "admin@example.com",
                 permission
-                                                                                 ));
+        ));
     }
 
     @Test
@@ -47,8 +47,8 @@ class SecurityServiceTest {
                 ForbiddenException.class, () -> securityService.validateAuthorization(
                         "admin@example.com",
                         Permission.REGISTER_BOOK
-                                                                                     )
-                               );
+                )
+        );
     }
 
     @Test
@@ -72,7 +72,7 @@ class SecurityServiceTest {
         Assertions.assertDoesNotThrow(() -> securityService.validateAuthorization(
                 "librarian@example.com",
                 Permission.REGISTER_BOOK
-                                                                                 ));
+        ));
     }
 
     @ParameterizedTest(name = "Librarian user doesn't have permission {0}")
@@ -98,7 +98,7 @@ class SecurityServiceTest {
                 ForbiddenException.class, () -> securityService.validateAuthorization(
                         "librarian@example.com",
                         permission
-                                                                                     )
-                               );
+                )
+        );
     }
 }

@@ -6,13 +6,15 @@ import com.application.digibookyproject.service.exception.NotFoundException;
 import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
 import com.application.digibookyproject.domain.Book;
 import com.application.digibookyproject.repository.BookRepository;
+import com.application.digibookyproject.service.exception.NotFoundException;
 import com.application.digibookyproject.service.predicate.BookPredicate;
+import com.application.digibookyproject.repository.BookRepository;
 import com.application.digibookyproject.service.request.PostBookRequest;
+import com.application.digibookyproject.service.request.PutBookRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -25,13 +27,14 @@ public class BookService {
 
     public List<Book> getAllBooks(GetBooksWithFilterRequest queryDto) {
         BookPredicate filter = new BookPredicate(queryDto);
-        return bookRepository.getAll().stream().filter(filter::applyFilters).toList();
+        return bookRepository.getAll()
+                .stream()
+                .filter(filter::applyFilters)
+                .toList();
     }
 
     public Book getBookById(UUID id) {
-        Optional<Book> book = Optional.of(bookRepository.get(id).orElseThrow(() -> NotFoundException.bookNotFound(
-                id)));
-        return book.get();
+        return bookRepository.get(id).orElseThrow(() -> NotFoundException.bookNotFound(id));
     }
 
     private boolean checkIsbn(String isbn) {
@@ -44,7 +47,6 @@ public class BookService {
     }
 
     public Book createBook(PostBookRequest request) {
-
         verifyFilledIn(request.isbn(), "isbn");
         if (!checkIsbn(request.isbn())) throw BadRequestException.invalidIsbn(request.isbn());
         verifyFilledIn(request.title(), "title");
@@ -56,6 +58,20 @@ public class BookService {
                 request.title(),
                 new Author(request.authorFirstname(), request.authorLastname())
         );
+        return bookRepository.save(book);
+    }
+    
+    public Book updateBook(PutBookRequest request) {
+        verifyFilledIn(request.title(), "title");
+        verifyFilledIn(request.authorFirstName(), "author Firstname");
+        verifyFilledIn(request.authorLastName(), "author Lastname");
+
+        Book book = bookRepository.get(request.id())
+                .orElseThrow(() -> NotFoundException.bookNotFound(request.id()));
+
+        book.setTitle(request.title());
+        book.setAuthor(new Author(request.authorFirstName(), request.authorLastName()));
+
         return bookRepository.save(book);
     }
 
