@@ -10,11 +10,10 @@ import com.application.digibookyproject.service.predicate.BookPredicate;
 import com.application.digibookyproject.service.request.PostBookRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class BookService {
@@ -35,14 +34,19 @@ public class BookService {
         return book.get();
     }
 
+    private Boolean checkIsbn(String isbn) {
+        if (isbn.length() != 17) return false;
+        String[] array = isbn.split("-");
+        if (array.length != 5) return false;
+        if (!array[0].equals("978") && !array[0].equals("979")) return false;
+        return Arrays.stream(array)
+                .allMatch(part -> part.matches("\\d+"));
+    }
+
     public Book createBook(PostBookRequest request) {
 
         verifyFilledIn(request.isbn(), "isbn");
-        Pattern pattern = Pattern.compile(
-                "^(?=\\d{3}-\\d-\\d{4}-\\d{4}-\\d$)97[89]-\\d-\\d{4}-\\d{4}-\\d$");
-        Matcher matcher = pattern.matcher(request.isbn());
-        if (!matcher.find()) throw BadRequestException.invalidIsbn(request.isbn());
-
+        if (!checkIsbn(request.isbn())) throw BadRequestException.invalidIsbn(request.isbn());
         verifyFilledIn(request.title(), "title");
         verifyFilledIn(request.authorFirstname(), "author Firstname");
         verifyFilledIn(request.authorLastname(), "author Lastname");
