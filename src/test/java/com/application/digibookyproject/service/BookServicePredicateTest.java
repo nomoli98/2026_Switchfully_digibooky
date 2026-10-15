@@ -109,5 +109,4 @@ class BookServicePredicateTest {
         ));
         Assertions.assertThat(books).containsExactlyInAnyOrderElementsOf(List.of(book2, book3));
     }
-
 }

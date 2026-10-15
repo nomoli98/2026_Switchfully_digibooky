@@ -1,5 +1,6 @@
 package com.application.digibookyproject.api.controller;
 
+import com.application.digibookyproject.api.dto.MemberDto;
 import com.application.digibookyproject.domain.member.Member;
 import com.application.digibookyproject.service.request.PostMemberRequest;
 import io.restassured.RestAssured;
@@ -11,8 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class MemberControllerTest {
     @LocalServerPort
     private int port;
@@ -46,7 +49,7 @@ class MemberControllerTest {
                 8000, "Readsville", "12-345-6789"
         ))
                 .assertThat()
-                .statusCode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.CREATED.value())
                 .extract()
                 .as(Member.class);
 
@@ -71,8 +74,7 @@ class MemberControllerTest {
                 .statusCode(HttpStatus.CONFLICT.value())
                 .extract().as(ErrorResponse.class);
 
-        Assertions.assertThat(response.message).isEqualTo(
-                "A user with email ronreader@reading.com already exists.");
+        Assertions.assertThat(response.message).isEqualTo("A user with email ronreader@reading.com already exists.");
     }
 
     @Test
@@ -90,5 +92,53 @@ class MemberControllerTest {
         Assertions.assertThat(response.message).isEqualTo("Member parameter email is required");
     }
 
+    @Test
+    @DisplayName("getting all users when user is unauthenticated returns unauthorized")
+    void getAllUsers_givenUnauthenticated_returnsUnauthorized() {
+        ErrorResponse response = RestAssured.given()
+                .port(port)
+                .when()
+                .get("/users")
+                .then()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .extract().as(ErrorResponse.class);
 
+        Assertions.assertThat(response.message).isEqualTo("Invalid Credentials");
+    }
+
+    @Test
+    @DisplayName("getting all users when user is unauthorized returns forbidden")
+    void getAllUsers_givenUnauthorized_returnsForbidden() {
+        postUser(new CreateMemberRequest(
+                "Ron", "Reader", "ronreader@reading.com",
+                "Read Street", "4A",
+                8000, "Readsville", "12-345-6789"
+        ));
+        ErrorResponse response = RestAssured.given()
+                .port(port)
+                .header("Authorization", "ronreader@reading.com")
+                .when()
+                .get("/users")
+                .then()
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .extract().as(ErrorResponse.class);
+
+        Assertions.assertThat(response.message).isEqualTo(
+                "You don't have permission to view members");
+    }
+
+    @Test
+    @DisplayName("getting all users when user is authorized returns users")
+    void getAllUsers_givenAuthorized_returnsUsers() {
+        MemberDto[] response = RestAssured.given()
+                .port(port)
+                .header("Authorization", "admin@example.com")
+                .when()
+                .get("/users")
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(MemberDto[].class);
+
+        Assertions.assertThat(response.length).isEqualTo(1);
+    }
 }

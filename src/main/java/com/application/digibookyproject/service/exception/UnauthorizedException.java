@@ -13,5 +13,4 @@ public class UnauthorizedException extends RuntimeException {
     public static UnauthorizedException invalidCredentials() {
         return new UnauthorizedException("Invalid Credentials");
     }
-
 }

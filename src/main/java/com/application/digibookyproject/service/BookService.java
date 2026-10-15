@@ -25,7 +25,10 @@ public class BookService {
 
     public List<Book> getAllBooks(GetBooksWithFilterRequest queryDto) {
         BookPredicate filter = new BookPredicate(queryDto);
-        return bookRepository.getAll().stream().filter(filter::applyFilters).toList();
+        return bookRepository.getAll()
+                .stream()
+                .filter(filter::applyFilters)
+                .toList();
     }
 
     public Book getBookById(UUID id) {

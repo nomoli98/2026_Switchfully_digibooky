@@ -12,5 +12,4 @@ public class ConflictException extends RuntimeException {
     public static ConflictException duplicateInss(String inss) {
         return new ConflictException("A user with inss number %s already exists.".formatted(inss));
     }
-
 }

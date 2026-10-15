@@ -27,7 +27,6 @@ class MemberServiceTest {
         memberService = new MemberService(memberRepository);
     }
 
-
     @Test
     @DisplayName("Calling createMember with correct arguments returns the created member")
     void createMember_givenValidArguments_thenCreateNewMember() {
@@ -53,7 +52,7 @@ class MemberServiceTest {
         BadRequestException ex = assertThrows(
                 BadRequestException.class,
                 () -> memberService.createMember(dto)
-                                             );
+          );
         assertEquals("Email ronreader-reading.com doesn't match pattern x@x.x", ex.getMessage());
     }
 
@@ -66,15 +65,15 @@ class MemberServiceTest {
                                 8000, "Readsville", "12-345-6789"
                         ),
                         "email", "Member parameter email is required"
-                            ),
+                ),
                 Arguments.of(
-                        new PostMemberRequest(
+                        new CreateMemberRequest(
                                 "Ron", "Reader", "ronreader@reading.com",
                                 "Read Street", "4A",
                                 8000, "Readsville", null
                         ),
                         "inss", "Member parameter inss is required"
-                            ),
+                ),
                 Arguments.of(
                         new PostMemberRequest(
                                 "", "Reader", "ronreader@reading.com",
@@ -82,7 +81,7 @@ class MemberServiceTest {
                                 8000, "Readsville", "12-345-6789"
                         ),
                         "firstname", "Member parameter firstname is required"
-                            ),
+                ),
                 Arguments.of(
                         new PostMemberRequest(
                                 "Ron", "Reader", "ronreader@reading.com",
@@ -90,22 +89,15 @@ class MemberServiceTest {
                                 8000, "", "12-345-6789"
                         ),
                         "city", "Member parameter city is required"
-                            )
-                        );
+                )
+        );
     }
 
     @ParameterizedTest(name = "missing {1}")
     @MethodSource("missingFieldSource")
     @DisplayName("Missing fields on creation")
-    void createMember_givenMissingField_thenThrowsBadRequestException(
-            PostMemberRequest dto,
-            String field,
-            String exceptionMessage
-                                                                     ) {
-        BadRequestException ex = assertThrows(
-                BadRequestException.class,
-                () -> memberService.createMember(dto)
-                                             );
+    void createMember_givenMissingField_thenThrowsBadRequestException(PostMemberRequest dto, String field, String exceptionMessage) {
+        BadRequestException ex = assertThrows(BadRequestException.class, () -> memberService.createMember(dto));
         assertEquals(exceptionMessage, ex.getMessage());
     }
 
@@ -118,7 +110,7 @@ class MemberServiceTest {
                                 8000, "Readsville", "12-345-6789"
                         ),
                         "email", "A user with email jan.peeters@example.com already exists."
-                            ),
+                ),
                 Arguments.of(
                         new PostMemberRequest(
                                 "Ron", "Reader", "ronreader@reading.com",
@@ -126,22 +118,15 @@ class MemberServiceTest {
                                 8000, "Readsville", "90.07.22-234.56"
                         ),
                         "inss", "A user with inss number 90.07.22-234.56 already exists."
-                            )
-                        );
+                )
+        );
     }
 
     @ParameterizedTest(name = "duplicate {1}")
     @MethodSource("duplicateFieldSource")
     @DisplayName("Duplicate fields on creation")
-    void createMember_givenDuplicate_thenThrowsConflictException(
-            PostMemberRequest dto,
-            String field,
-            String exceptionMessage
-                                                                ) {
-        ConflictException ex = assertThrows(
-                ConflictException.class,
-                () -> memberService.createMember(dto)
-                                           );
+    void createMember_givenDuplicate_thenThrowsConflictException(PostMemberRequest dto, String field, String exceptionMessage) {
+        ConflictException ex = assertThrows(ConflictException.class, () -> memberService.createMember(dto));
         assertEquals(exceptionMessage, ex.getMessage());
     }
 }
