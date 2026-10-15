@@ -20,7 +20,7 @@ public class BookPredicate {
         if (dto.firstName() != null && !isContained(
                 book.getAuthor().getFirstname(),
                 dto.firstName()
-                                                   )) return false;
+        )) return false;
         if (dto.lastName() != null && !isContained(book.getAuthor().getLastname(), dto.lastName()))
             return false;
         return true;

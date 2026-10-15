@@ -17,7 +17,7 @@ public class MemberService {
 
     public Member createMember(
             PostMemberRequest request
-                              ) {
+    ) {
         verifyFilledIn(request.email(), "email");
         verifyFilledIn(request.inss(), "inss");
         verifyFilledIn(request.firstname(), "firstname");

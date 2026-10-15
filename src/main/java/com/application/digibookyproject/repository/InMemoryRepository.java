@@ -20,7 +20,7 @@ public class InMemoryRepository<T> {
                 "Fetching all items ({} {} stored)",
                 storedItems.size(),
                 storedItems.getClass()
-                    );
+        );
         return storedItems.values().stream().toList();
     }
 

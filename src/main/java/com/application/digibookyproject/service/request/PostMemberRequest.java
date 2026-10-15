@@ -7,4 +7,5 @@ public record PostMemberRequest(String firstname,
                                 String streetnumber,
                                 int postalCode,
                                 String city,
-                                String inss) { }
+                                String inss) {
+}

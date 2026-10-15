@@ -19,29 +19,15 @@ public class BookController {
     private final BookMapper bookMapper;
     private final SecurityService securityService;
 
-    public BookController(
-            BookService bookService,
-            BookMapper bookMapper,
-            SecurityService securityService
-                         ) {
+    public BookController(BookService bookService, BookMapper bookMapper, SecurityService securityService) {
         this.bookService = bookService;
         this.bookMapper = bookMapper;
         this.securityService = securityService;
     }
 
     @GetMapping
-    public List<BookDto> getAllBooks(
-            @RequestParam(required = false) String isbn,
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String lastName
-                                    ) {
-        GetBooksWithFilterRequest bookFilterQueryDto = new GetBooksWithFilterRequest(
-                isbn,
-                                                                                     title,
-                                                                                     firstName,
-                                                                                     lastName
-        );
+    public List<BookDto> getAllBooks(@RequestParam(required = false) String isbn, @RequestParam(required = false) String title, @RequestParam(required = false) String firstName, @RequestParam(required = false) String lastName) {
+        GetBooksWithFilterRequest bookFilterQueryDto = new GetBooksWithFilterRequest(isbn, title, firstName, lastName);
         return bookService.getAllBooks(bookFilterQueryDto).stream().map(bookMapper::mapToDto).toList();
 
     }
@@ -52,19 +38,13 @@ public class BookController {
     }
 
     @PostMapping
-    public BookDto registerBook(
-            @RequestBody PostBookRequest postBookRequest,
-            @RequestHeader(value = "Authorization", required = false) String email
-                               ) {
+    public BookDto registerBook(@RequestBody PostBookRequest postBookRequest, @RequestHeader(value = "Authorization", required = false) String email) {
         securityService.validateAuthorization(email, Permission.REGISTER_BOOK);
         return bookMapper.mapToDto(bookService.createBook(postBookRequest));
     }
 
     @DeleteMapping(path = "/{id}")
-    public BookDto deleteBook(
-            @PathVariable UUID id,
-            @RequestHeader(value = "Authorization", required = false) String email
-                             ) {
+    public BookDto deleteBook(@PathVariable UUID id, @RequestHeader(value = "Authorization", required = false) String email) {
         securityService.validateAuthorization(email, Permission.DELETE_BOOK);
         return bookMapper.mapToDto(bookService.deleteBook(id));
     }

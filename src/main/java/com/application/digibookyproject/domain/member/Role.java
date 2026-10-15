@@ -7,7 +7,7 @@ public enum Role {
             Permission.REGISTER_ADMIN,
             Permission.VIEW_MEMBERS,
             Permission.REGISTER_LIBRARIAN
-                 )),
+    )),
     LIBRARIAN(List.of(Permission.REGISTER_BOOK)),
     MEMBER(List.of());
 

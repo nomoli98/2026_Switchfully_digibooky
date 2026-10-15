@@ -10,4 +10,5 @@ public record MemberDto(String lastname,
                         int postalCode,
                         String city,
                         String inss,
-                        UUID id) { }
+                        UUID id) {
+}

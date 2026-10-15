@@ -23,7 +23,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     protected void bookNotFound(
             NotFoundException ex,
             HttpServletResponse response
-                               ) throws IOException {
+    ) throws IOException {
         logger.warn("Book not found: {}", ex.getMessage());
         response.sendError(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
@@ -32,7 +32,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     protected void badRequest(
             BadRequestException ex,
             HttpServletResponse response
-                             ) throws IOException {
+    ) throws IOException {
         logger.warn("Bad Request: {}", ex.getMessage());
         response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     }
@@ -51,10 +51,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
                 "Unexpected error: {}",
                 errorId,
                 ex
-                    );   // exception LAST = stack trace included
+        );   // exception LAST = stack trace included
         response.sendError(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Something went wrong. Please contact support with code: " + errorId
-                          );
+        );
     }
 }
