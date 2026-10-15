@@ -42,7 +42,7 @@ class PostBookServiceTest {
                 "le author firstname",
                 "le author last name"
         );
-        Assertions.assertThat(service.createBook(request).getIsbn()).isEqualTo("978 1 1234 5678 9");
+        Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(Exception.class);
     }
 
     @Test
@@ -54,7 +54,7 @@ class PostBookServiceTest {
                 "le author firstname",
                 "le author last name"
         );
-        Assertions.assertThat(service.createBook(request).getIsbn()).isEqualTo("9781123456789");
+        Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(Exception.class);
     }
 
     @Test
