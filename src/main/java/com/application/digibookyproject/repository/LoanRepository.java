@@ -5,6 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Repository
 public class LoanRepository extends InMemoryRepository<Loan> {
     private final Logger logger = LoggerFactory.getLogger(LoanRepository.class);
@@ -12,5 +15,9 @@ public class LoanRepository extends InMemoryRepository<Loan> {
     public Loan save(Loan loan) {
         logger.debug("Saving member with id {}", loan.getId());
         return saveWithId(loan.getId(), loan);
+    }
+
+    public Optional<Loan> getLoanWithBookId(UUID bookId) {
+        return getOptional(book -> book.getId().equals(bookId));
     }
 }

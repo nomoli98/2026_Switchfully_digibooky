@@ -27,11 +27,13 @@ public class LoanService {
         verifyFilledIn(request.memberEmail(), "member email");
         if (request.bookId() == null)
             throw BadRequestException.loanParameterRequired("book id");
+        Book book = bookService.getBookById(request.bookId());
+        if (!isAvailable(book))
+            throw NotFoundException.bookNotFound(request.bookId());
         Member member = memberService.getAllMembers().stream()
                 .filter(m -> m.getEmail().equals(request.memberEmail()))
                 .findFirst()
                 .orElseThrow(() -> NotFoundException.memberNotFound(request.memberEmail()));
-        Book book = bookService.getBookById(request.bookId());
 
         Loan loan = new Loan(
                 member,
@@ -44,5 +46,9 @@ public class LoanService {
     private void verifyFilledIn(String value, String parameterName) {
         if (value == null || value.isEmpty())
             throw BadRequestException.loanParameterRequired(parameterName);
+    }
+
+    private boolean isAvailable(Book book) {
+        return loanRepository.getLoanWithBookId(book.getId()).isEmpty();
     }
 }
