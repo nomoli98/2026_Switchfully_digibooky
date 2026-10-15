@@ -19,7 +19,7 @@ public class MemberRepository extends InMemoryRepository<Member> {
 
     public MemberRepository() {
         logger.debug("Initializing MemberRepository with admin@example.com");
-        Member admin = new Member("admin", "admin", "admin@example.com", null, null, 0, null, null);
+        Member admin = new Member("admin", "admin", "admin@example.com", "", "", 0, "", "");
         admin.setRole(Role.ADMIN);
         save(admin);
     }

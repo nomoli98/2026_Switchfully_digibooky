@@ -2,6 +2,7 @@ package com.application.digibookyproject.api.controller;
 
 import com.application.digibookyproject.api.dto.MemberDto;
 import com.application.digibookyproject.domain.member.Member;
+import com.application.digibookyproject.domain.member.Role;
 import com.application.digibookyproject.service.request.PostMemberRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -32,6 +33,7 @@ class MemberControllerTest {
     private ValidatableResponse postUser(PostMemberRequest request) {
         return RestAssured
                 .given()
+                .header("Authorization", "admin@example.com")
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
                 .body(request)
@@ -47,7 +49,7 @@ class MemberControllerTest {
         Member member = postUser(new PostMemberRequest(
                 "Ron", "Reader", "ronreader@reading.com",
                 "Read Street", "4A",
-                8000, "Readsville", "12-345-6789"
+                8000, "Readsville", "12-345-6789", Role.MEMBER
         ))
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
@@ -58,18 +60,34 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("Adding a member successfully returns the correct response")
+    @DisplayName("Adding a librarian successfully returns the correct response")
+    void postLibrarian_givenRepositoryIsEmpty_thenReturnCreatedObject() {
+        Member member = postUser(new PostMemberRequest(
+                "Ron", "Reader", "ronreader@reading.com",
+                "Read Street", "4A",
+                8000, "Readsville", "12-345-6789", Role.LIBRARIAN
+        ))
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(Member.class);
+
+        Assertions.assertThat(member.getRole()).isEqualTo(Role.LIBRARIAN);
+    }
+
+    @Test
+    @DisplayName("Adding a member that already exists returns conflict")
     void postUser_givenEmailAlreadyExists_thenThrowsException() {
         postUser(new PostMemberRequest(
                 "Ron", "Reader", "ronreader@reading.com",
                 "Read Street", "4A",
-                8000, "Readsville", "12-345-6789"
+                8000, "Readsville", "12-345-6789", Role.MEMBER
         ));
 
         ErrorResponse response = postUser(new PostMemberRequest(
                 "Ron", "Reader", "ronreader@reading.com",
                 "Read Street", "4A",
-                8000, "Readsville", "12-345-6779"
+                8000, "Readsville", "12-345-6779", Role.MEMBER
         ))
                 .assertThat()
                 .statusCode(HttpStatus.CONFLICT.value())
@@ -79,12 +97,12 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("Adding a member successfully returns the correct response")
+    @DisplayName("Adding a member with empty email returns the correct response")
     void postUser_givenEmailEmpty_thenThrowsException() {
         ErrorResponse response = postUser(new PostMemberRequest(
                 "Ron", "Reader", null,
                 "Read Street", "4A",
-                8000, "Readsville", "12-345-6779"
+                8000, "Readsville", "12-345-6779", Role.MEMBER
         ))
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
@@ -113,7 +131,7 @@ class MemberControllerTest {
         postUser(new PostMemberRequest(
                 "Ron", "Reader", "ronreader@reading.com",
                 "Read Street", "4A",
-                8000, "Readsville", "12-345-6789"
+                8000, "Readsville", "12-345-6789", Role.MEMBER
         ));
         ErrorResponse response = RestAssured.given()
                 .port(port)

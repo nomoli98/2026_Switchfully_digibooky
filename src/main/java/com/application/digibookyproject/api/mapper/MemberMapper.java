@@ -15,7 +15,8 @@ public class MemberMapper {
                 member.getStreetnumber(),
                 member.getPostalCode(),
                 member.getCity(),
-                member.getId()
+                member.getId(),
+                member.getRole()
         );
     }
 }

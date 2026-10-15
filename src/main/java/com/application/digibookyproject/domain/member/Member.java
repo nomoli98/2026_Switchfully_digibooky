@@ -10,7 +10,7 @@ public class Member {
     private final String streetnumber;
     private final int postalCode;
     private final String city;
-    private final String Inss;
+    private final String inss;
     private final UUID id;
     private Role role = Role.MEMBER;
 
@@ -23,7 +23,7 @@ public class Member {
             int postalCode,
             String city,
             String inss
-    ) {
+                 ) {
         this.lastname = lastname;
         this.firstname = firstname;
         this.email = email;
@@ -31,7 +31,7 @@ public class Member {
         this.streetnumber = streetnumber;
         this.postalCode = postalCode;
         this.city = city;
-        Inss = inss;
+        this.inss = inss;
         this.id = UUID.randomUUID();
     }
 
@@ -64,11 +64,15 @@ public class Member {
     }
 
     public String getInss() {
-        return Inss;
+        return inss;
     }
 
     public UUID getId() {
         return id;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public void setRole(Role role) {

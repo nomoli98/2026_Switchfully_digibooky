@@ -8,7 +8,11 @@ public enum Role {
             Permission.VIEW_MEMBERS,
             Permission.REGISTER_LIBRARIAN
     )),
-    LIBRARIAN(List.of(Permission.REGISTER_BOOK)),
+    LIBRARIAN(List.of(
+            Permission.REGISTER_BOOK,
+            Permission.UPDATE_BOOK,
+            Permission.DELETE_BOOK
+    )),
     MEMBER(List.of());
 
     private final List<Permission> permissions;

@@ -6,6 +6,8 @@ import com.application.digibookyproject.domain.member.Permission;
 import com.application.digibookyproject.service.MemberService;
 import com.application.digibookyproject.service.SecurityService;
 import com.application.digibookyproject.service.request.PostMemberRequest;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,14 +29,20 @@ public class MemberController {
         this.securityService = securityService;
     }
 
+    @SecurityRequirement(name = "Authorization")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MemberDto createMember(@RequestBody PostMemberRequest postMemberRequest) {
+    public MemberDto createMember(
+            @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email,
+            @RequestBody PostMemberRequest postMemberRequest
+    ) {
+        securityService.validateAuthorization(email, Permission.REGISTER_LIBRARIAN);
         return memberMapper.mapToDto(memberService.createMember(postMemberRequest));
     }
 
+    @SecurityRequirement(name = "Authorization")
     @GetMapping
-    public List<MemberDto> getMembers(@RequestHeader(value = "Authorization", required = false) String email) {
+    public List<MemberDto> getMembers(@Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email) {
         securityService.validateAuthorization(email, Permission.VIEW_MEMBERS);
         return memberService.getAllMembers().stream()
                 .map(memberMapper::mapToDto)
