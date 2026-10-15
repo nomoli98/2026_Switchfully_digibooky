@@ -4,9 +4,12 @@ import com.application.digibookyproject.api.dto.MemberDto;
 import com.application.digibookyproject.api.mapper.MemberMapper;
 import com.application.digibookyproject.domain.member.Permission;
 import com.application.digibookyproject.service.MemberService;
-import com.application.digibookyproject.service.request.CreateMemberRequest;
+import com.application.digibookyproject.service.SecurityService;
+import com.application.digibookyproject.service.request.PostMemberRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
