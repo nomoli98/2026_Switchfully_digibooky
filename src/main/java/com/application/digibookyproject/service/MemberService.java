@@ -29,8 +29,6 @@ public class MemberService {
             throw ConflictException.duplicateEmail(request.email());
         if (memberRepository.getMemberWithInss(request.inss()).isPresent())
             throw ConflictException.duplicateInss(request.inss());
-//        if (!request.email().matches("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"))
-//            throw BadRequestException.invalidEmail(request.email());
         if (!emailValidator.isValid(request.email())) throw BadRequestException.invalidEmail(request.email());
 
         Member member = new Member(
