@@ -42,7 +42,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("Adding a member succesfully returns the correct response")
+    @DisplayName("Adding a member successfully returns the correct response")
     void postUser_givenRepositoryIsEmpty_thenReturnCreatedObject() {
         Member member = postUser(new PostMemberRequest(
                 "Ron", "Reader", "ronreader@reading.com",
@@ -58,7 +58,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("Adding a member succesfully returns the correct response")
+    @DisplayName("Adding a member successfully returns the correct response")
     void postUser_givenEmailAlreadyExists_thenThrowsException() {
         postUser(new PostMemberRequest(
                 "Ron", "Reader", "ronreader@reading.com",
@@ -79,7 +79,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @DisplayName("Adding a member succesfully returns the correct response")
+    @DisplayName("Adding a member successfully returns the correct response")
     void postUser_givenEmailEmpty_thenThrowsException() {
         ErrorResponse response = postUser(new PostMemberRequest(
                 "Ron", "Reader", null,
