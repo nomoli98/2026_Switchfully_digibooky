@@ -26,7 +26,8 @@ class MemberControllerTest {
             String error,
             String message,
             String path
-    ) { }
+    ) {
+    }
 
     private ValidatableResponse postUser(PostMemberRequest request) {
         return RestAssured
@@ -109,7 +110,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("getting all users when user is unauthorized returns forbidden")
     void getAllUsers_givenUnauthorized_returnsForbidden() {
-        postUser(new CreateMemberRequest(
+        postUser(new PostMemberRequest(
                 "Ron", "Reader", "ronreader@reading.com",
                 "Read Street", "4A",
                 8000, "Readsville", "12-345-6789"

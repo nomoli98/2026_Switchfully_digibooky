@@ -3,9 +3,9 @@ package com.application.digibookyproject.service;
 import com.application.digibookyproject.domain.member.Member;
 import com.application.digibookyproject.factory.MemberTestData;
 import com.application.digibookyproject.repository.MemberRepository;
-import com.application.digibookyproject.service.request.PostMemberRequest;
 import com.application.digibookyproject.service.exception.BadRequestException;
 import com.application.digibookyproject.service.exception.ConflictException;
+import com.application.digibookyproject.service.request.PostMemberRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MemberServiceTest {
     private MemberService memberService;
@@ -52,7 +53,7 @@ class MemberServiceTest {
         BadRequestException ex = assertThrows(
                 BadRequestException.class,
                 () -> memberService.createMember(dto)
-          );
+        );
         assertEquals("Email ronreader-reading.com doesn't match pattern x@x.x", ex.getMessage());
     }
 
@@ -67,7 +68,7 @@ class MemberServiceTest {
                         "email", "Member parameter email is required"
                 ),
                 Arguments.of(
-                        new CreateMemberRequest(
+                        new PostMemberRequest(
                                 "Ron", "Reader", "ronreader@reading.com",
                                 "Read Street", "4A",
                                 8000, "Readsville", null
