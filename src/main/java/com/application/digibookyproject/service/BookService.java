@@ -39,7 +39,7 @@ public class BookService {
 
         verifyFilledIn(request.isbn(), "isbn");
         Pattern pattern = Pattern.compile(
-                "^(?=(?:\\D*\\d){13}$)97[89]([- ]?)\\d{1,5}\\1\\d{1,7}\\1\\d{1,7}\\1\\d$");
+                "^(?=\\d{3}-\\d-\\d{4}-\\d{4}-\\d$)97[89]-\\d-\\d{4}-\\d{4}-\\d$");
         Matcher matcher = pattern.matcher(request.isbn());
         if (!matcher.find()) throw BadRequestException.invalidIsbn(request.isbn());
 
