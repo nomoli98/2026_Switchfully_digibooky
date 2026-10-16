@@ -37,7 +37,6 @@ class LoanControllerTest {
     @Test
     @DisplayName("a valid loan request saves a loan then returns it")
     void givenValidLoanRequest_whenRequested_thenReturnsLoan() {
-        //Given
         PostBookRequest bookRequest = new PostBookRequest(
                 "978-1-1234-5678-9",
                 "le title",
@@ -59,7 +58,6 @@ class LoanControllerTest {
         Member member = memberService.getAllMembers().getFirst();
         PostLoanRequest request = new PostLoanRequest(member.getEmail(), book.getId());
 
-        //When
         LoanDto loan = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
@@ -75,7 +73,6 @@ class LoanControllerTest {
                 .extract()
                 .as(LoanDto.class);
 
-        //Then
         Assertions.assertThat(loan.memberId()).isEqualTo(member.getId());
         Assertions.assertThat(loan.bookId()).isEqualTo(book.getId());
         Assertions.assertThat(loan.dueDate())

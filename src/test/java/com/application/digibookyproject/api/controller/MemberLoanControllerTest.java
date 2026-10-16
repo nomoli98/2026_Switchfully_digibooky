@@ -135,7 +135,7 @@ class MemberLoanControllerTest {
 
     @Nested
     @DisplayName("as an regular member")
-    class AsARegularMember {
+    class WhenUnauthorized {
         @Test
         @DisplayName("getting all loans returns forbidden status code")
         void whenGettingAllLoans_thenReturnForbidden() {
