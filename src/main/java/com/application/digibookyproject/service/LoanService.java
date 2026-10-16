@@ -18,6 +18,7 @@ public class LoanService {
     private final LoanRepository loanRepository;
     private final MemberService memberService;
     private final BookService bookService;
+    public static final int DEFAULT_LOAN_DURATION_IN_WEEKS = 3;
 
     public LoanService(LoanRepository loanRepository, MemberService memberService, BookService bookService) {
         this.loanRepository = loanRepository;
@@ -44,14 +45,14 @@ public class LoanService {
         Loan loan = new Loan(
                 member,
                 book,
-                LocalDate.now().plusWeeks(Loan.DEFAULT_LOAN_DURATION_IN_WEEKS)
+                LocalDate.now().plusWeeks(DEFAULT_LOAN_DURATION_IN_WEEKS)
         );
         return loanRepository.save(loan);
     }
 
     public Loan closeLoan(UUID loanId, String email){
         Loan existingLoan = loanRepository.get(loanId).orElseThrow(() -> NotFoundException.loanNotFound(loanId));
-        if (!existingLoan.getMember().getEmail().equals(email)) throw BadRequestException.NotMatchingUser();
+        if (!existingLoan.getMember().getEmail().equals(email)) throw BadRequestException.notMatchingUser();
         return loanRepository.deleteWithId(loanId, existingLoan);
     }
 

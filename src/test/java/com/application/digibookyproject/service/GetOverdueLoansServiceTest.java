@@ -39,9 +39,9 @@ class GetOverdueLoansServiceTest {
     void initLoans() {
         for (int i = 0; i < 10; i++) {
             if (i % 2 == 0)
-                loanRepository.save(new Loan(member, book, LocalDate.now().plusWeeks(1)));
+                loanRepository.save(new Loan(member, book, LocalDate.now().plusWeeks(4)));
             else
-                loanRepository.save(new Loan(member, book, LocalDate.now().minusWeeks(1)));
+                loanRepository.save(new Loan(member, book, LocalDate.now().minusWeeks(4)));
         }
         loanService = new LoanService(loanRepository, memberService, bookService);
     }

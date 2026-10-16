@@ -71,7 +71,7 @@ class BookServiceTest {
                 "city",
                 "validInss"
         );
-        Loan loan = new Loan(member, book, LocalDate.now().plusWeeks(Loan.DEFAULT_LOAN_DURATION_IN_WEEKS));
+        Loan loan = new Loan(member, book, LocalDate.now().plusWeeks(LoanService.DEFAULT_LOAN_DURATION_IN_WEEKS));
         book.setLoan(loan);
         Book resultBook = bookRepository.get(book.getId()).orElseThrow(() -> NotFoundException.bookNotFound(
                 book.getId()));
