@@ -6,8 +6,6 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class Loan {
-    public static final int DEFAULT_LOAN_DURATION_IN_WEEKS = 3;
-
     private final UUID id;
     private final Member member;
     private final Book book;

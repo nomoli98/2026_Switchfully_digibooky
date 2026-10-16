@@ -15,6 +15,8 @@ import java.util.UUID;
 
 @Service
 public class LoanService {
+    private static final int DEFAULT_LOAN_DURATION_IN_WEEKS = 3;
+
     private final LoanRepository loanRepository;
     private final MemberService memberService;
     private final BookService bookService;
@@ -45,7 +47,7 @@ public class LoanService {
         Loan loan = new Loan(
                 member,
                 book,
-                LocalDate.now().plusWeeks(Loan.DEFAULT_LOAN_DURATION_IN_WEEKS)
+                LocalDate.now().plusWeeks(DEFAULT_LOAN_DURATION_IN_WEEKS)
         );
         return loanRepository.save(loan);
     }

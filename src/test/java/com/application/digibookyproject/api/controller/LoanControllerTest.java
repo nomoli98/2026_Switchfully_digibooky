@@ -2,7 +2,6 @@ package com.application.digibookyproject.api.controller;
 
 import com.application.digibookyproject.api.dto.LoanDto;
 import com.application.digibookyproject.domain.Book;
-import com.application.digibookyproject.domain.Loan;
 import com.application.digibookyproject.domain.member.Member;
 import com.application.digibookyproject.domain.member.Role;
 import com.application.digibookyproject.service.BookService;
@@ -80,6 +79,6 @@ class LoanControllerTest {
         Assertions.assertThat(loan.memberId()).isEqualTo(member.getId());
         Assertions.assertThat(loan.bookId()).isEqualTo(book.getId());
         Assertions.assertThat(loan.dueDate())
-                .isEqualTo(LocalDate.now().plusWeeks(Loan.DEFAULT_LOAN_DURATION_IN_WEEKS));
+                .isEqualTo(LocalDate.now().plusWeeks(3));
     }
 }
