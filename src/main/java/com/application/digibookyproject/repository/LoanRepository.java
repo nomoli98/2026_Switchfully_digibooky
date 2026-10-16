@@ -19,7 +19,7 @@ public class LoanRepository extends InMemoryRepository<Loan> {
     }
 
     public Optional<Loan> getLoanWithBookId(UUID bookId) {
-        return getOptional(book -> book.getId().equals(bookId));
+        return getOptional(loan -> loan.getBook().getId().equals(bookId));
     }
 
     public List<Loan> getAllLoansWithMemberId(UUID memberId) {

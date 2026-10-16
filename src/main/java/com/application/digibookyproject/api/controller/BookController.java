@@ -1,15 +1,16 @@
 package com.application.digibookyproject.api.controller;
 
 import com.application.digibookyproject.api.dto.BookDto;
+import com.application.digibookyproject.api.mapper.BookMapper;
 import com.application.digibookyproject.domain.member.Permission;
+import com.application.digibookyproject.service.BookService;
 import com.application.digibookyproject.service.SecurityService;
 import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
-import com.application.digibookyproject.api.mapper.BookMapper;
-import com.application.digibookyproject.service.BookService;
 import com.application.digibookyproject.service.request.PostBookRequest;
 import com.application.digibookyproject.service.request.PutBookRequest;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,6 +43,7 @@ public class BookController {
 
     @SecurityRequirement(name = "Authorization")
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public BookDto registerBook(@RequestBody PostBookRequest postBookRequest, @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email) {
         securityService.validateAuthorization(email, Permission.REGISTER_BOOK);
         return bookMapper.mapToDto(bookService.createBook(postBookRequest));
@@ -49,7 +51,7 @@ public class BookController {
 
     @SecurityRequirement(name = "Authorization")
     @PutMapping
-    public BookDto updateBook(@RequestBody PutBookRequest putBookRequest, @Parameter(hidden = true)  @RequestHeader(value = "Authorization", required = false) String email) {
+    public BookDto updateBook(@RequestBody PutBookRequest putBookRequest, @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email) {
         securityService.validateAuthorization(email, Permission.UPDATE_BOOK);
         return bookMapper.mapToDto(bookService.updateBook(putBookRequest));
     }

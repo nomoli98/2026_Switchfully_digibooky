@@ -29,7 +29,10 @@ public class LoanController {
     @SecurityRequirement(name = "Authorization")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateLoanDto createLoan(@Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email, @RequestBody PostLoanRequest postLoanRequest) {
+    public CreateLoanDto createLoan(
+            @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email,
+            @RequestBody PostLoanRequest postLoanRequest
+    ) {
         securityService.validateAuthorization(email, Permission.REGISTER_LOAN);
         return loanMapper.mapToDto(loanService.createLoan(postLoanRequest));
     }
