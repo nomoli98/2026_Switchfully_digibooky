@@ -18,19 +18,20 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DeleteLoanServiceTest {
     private final BookRepository bookRepository = new BookRepository();
-    private final BookService bookService = new BookService(bookRepository);
+    private final LoanRepository loanRepository = new LoanRepository();
+    private final BookService bookService = new BookService(bookRepository, loanRepository);
     private final MemberRepository memberRepository = new MemberRepository();
     private final MemberService memberService = new MemberService(memberRepository);
-    private final LoanRepository loanRepository = new LoanRepository();
     private final LoanService loanService = new LoanService(loanRepository, memberService, bookService);
     private Loan loan;
 
     @BeforeEach
-    void initRepository(){
+    void initRepository() {
         PostBookRequest bookRequest = new PostBookRequest(
                 "978-1-1234-5678-9",
                 "le title",
@@ -67,14 +68,14 @@ class DeleteLoanServiceTest {
 
     @Test
     @DisplayName("deleting an existing loan returns the loan")
-    void givenAnExistingLoanId_WhenDeleted_ReturnsLoanObject(){
-        assertEquals(loan, loanService.closeLoan(loan.getId()));
+    void givenAnExistingLoanId_WhenDeleted_ReturnsLoanObject() {
+        assertEquals(loan, loanService.closeLoan(loan.getId(), loan.getMember().getEmail()));
     }
 
     @Test
     @DisplayName("deleting an non existing loan throws a notFoundException")
-    void givenAnNonExistingLoanId_WhenDeleted_ThrowsNotFoundException(){
-        assertThrows(NotFoundException.class, () -> loanService.closeLoan(UUID.randomUUID()));
+    void givenAnNonExistingLoanId_WhenDeleted_ThrowsNotFoundException() {
+        assertThrows(NotFoundException.class, () -> loanService.closeLoan(UUID.randomUUID(), "admin@example.com"));
     }
 
 }

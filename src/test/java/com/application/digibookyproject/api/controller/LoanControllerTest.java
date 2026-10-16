@@ -67,6 +67,7 @@ class LoanControllerTest {
                 .accept(ContentType.JSON)
                 .body(request)
                 .port(port)
+                .header("Authorization", "ronreader@reading.com")
                 .when()
                 .post("/loans")
                 .then()

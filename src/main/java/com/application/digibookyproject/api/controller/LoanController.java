@@ -29,7 +29,7 @@ public class LoanController {
     @SecurityRequirement(name = "Authorization")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public LoanDto createLoan(@Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email, @RequestBody PostLoanRequest postLoanRequest) {
+    public CreateLoanDto createLoan(@Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email, @RequestBody PostLoanRequest postLoanRequest) {
         securityService.validateAuthorization(email, Permission.REGISTER_LOAN);
         return loanMapper.mapToDto(loanService.createLoan(postLoanRequest));
     }
@@ -37,7 +37,7 @@ public class LoanController {
     @SecurityRequirement(name = "Authorization")
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public LoanDto closeLoan(@Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email, @PathVariable UUID id) {
+    public CreateLoanDto closeLoan(@Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email, @PathVariable UUID id) {
         securityService.validateAuthorization(email, Permission.CLOSE_LOAN);
         return loanMapper.mapToDto(loanService.closeLoan(id, email));
     }
