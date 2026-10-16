@@ -11,12 +11,14 @@ public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .components(new Components()
-                        .addSecuritySchemes("Authorization",
-                                new SecurityScheme()
-                                        .type(SecurityScheme.Type.APIKEY)
-                                        .in(SecurityScheme.In.HEADER)
-                                        .name("Authorization")));
+        SecurityScheme authScheme = new SecurityScheme()
+                .type(SecurityScheme.Type.APIKEY)
+                .in(SecurityScheme.In.HEADER)
+                .name("Authorization");
+
+        Components components = new Components()
+                .addSecuritySchemes("Authorization", authScheme);
+
+        return new OpenAPI().components(components);
     }
 }
