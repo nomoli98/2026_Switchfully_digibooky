@@ -1,7 +1,7 @@
 package com.application.digibookyproject.api.controller;
 
 import com.application.digibookyproject.api.dto.BookDto;
-import com.application.digibookyproject.api.dto.CreateLoanDto;
+import com.application.digibookyproject.api.dto.LoanDto;
 import com.application.digibookyproject.api.dto.MemberDto;
 import com.application.digibookyproject.domain.member.Role;
 import com.application.digibookyproject.service.request.PostBookRequest;
@@ -116,14 +116,14 @@ class BookControllerTest {
         @Test
         @DisplayName("getBook returns the email of the member who lent it if there is one")
         void getBook_givenBookHasLoan_thenReturnsLenderEmail() {
-            CreateLoanDto loanDto = requestAs(lendingMember.email())
+            LoanDto loanDto = requestAs(lendingMember.email())
                     .body(new PostLoanRequest(lendingMember.email(), book.id()))
                     .post("/loans")
                     .then()
                     .assertThat()
                     .statusCode(HttpStatus.CREATED.value())
                     .extract()
-                    .as(CreateLoanDto.class);
+                    .as(LoanDto.class);
 
             BookDto bookDto = requestAs("")
                     .get("books/" + book.id())

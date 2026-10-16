@@ -1,6 +1,6 @@
 package com.application.digibookyproject.api.controller;
 
-import com.application.digibookyproject.api.dto.CreateLoanDto;
+import com.application.digibookyproject.api.dto.LoanDto;
 import com.application.digibookyproject.api.mapper.LoanMapper;
 import com.application.digibookyproject.domain.member.Permission;
 import com.application.digibookyproject.service.LoanService;
@@ -30,7 +30,7 @@ public class LoanController {
     @SecurityRequirement(name = "Authorization")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateLoanDto createLoan(
+    public LoanDto createLoan(
             @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email,
             @RequestBody PostLoanRequest postLoanRequest
     ) {
@@ -41,7 +41,7 @@ public class LoanController {
     @SecurityRequirement(name = "Authorization")
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CreateLoanDto closeLoan(
+    public LoanDto closeLoan(
             @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email,
             @PathVariable UUID id
     ) {
@@ -52,7 +52,7 @@ public class LoanController {
     @SecurityRequirement(name = "Authorization")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CreateLoanDto> getAllOverdueLoans(
+    public List<LoanDto> getAllOverdueLoans(
             @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email
     ) {
         securityService.validateAuthorization(email, Permission.VIEW_MEMBERS);

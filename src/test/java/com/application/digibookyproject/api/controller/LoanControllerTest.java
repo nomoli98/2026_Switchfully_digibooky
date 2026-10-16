@@ -1,6 +1,6 @@
 package com.application.digibookyproject.api.controller;
 
-import com.application.digibookyproject.api.dto.CreateLoanDto;
+import com.application.digibookyproject.api.dto.LoanDto;
 import com.application.digibookyproject.domain.Book;
 import com.application.digibookyproject.domain.Loan;
 import com.application.digibookyproject.domain.member.Member;
@@ -61,7 +61,7 @@ class LoanControllerTest {
         PostLoanRequest request = new PostLoanRequest(member.getEmail(), book.getId());
 
         //When
-        CreateLoanDto loan = RestAssured
+        LoanDto loan = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
@@ -74,7 +74,7 @@ class LoanControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
-                .as(CreateLoanDto.class);
+                .as(LoanDto.class);
 
         //Then
         Assertions.assertThat(loan.memberId()).isEqualTo(member.getId());
