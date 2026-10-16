@@ -55,6 +55,10 @@ public class LoanService {
         return loanRepository.deleteWithId(loanId, existingLoan);
     }
 
+    public List<Loan> getAllOverdueLoan(){
+        return loanRepository.getAll().stream().filter(l -> l.getDueDate().isBefore(LocalDate.now())).toList();
+    }
+
     private void verifyFilledIn(String value, String parameterName) {
         if (value == null || value.isEmpty())
             throw BadRequestException.loanParameterRequired(parameterName);
