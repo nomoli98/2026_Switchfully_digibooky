@@ -10,7 +10,7 @@ public enum Permission {
     DELETE_BOOK("remove a book"),
     UPDATE_BOOK("update a book"),
     REGISTER_LOAN("register a new loan"),
-    CLOSE_LOAN("close a loan");
+    CLOSE_LOAN("close a loan"),
     VIEW_LOANS("view loans for a member");
 
     private final ForbiddenException exception;
