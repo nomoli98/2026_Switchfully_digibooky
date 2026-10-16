@@ -39,6 +39,6 @@ public class LoanController {
     @ResponseStatus(HttpStatus.OK)
     public LoanDto closeLoan(@Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email, @PathVariable UUID id) {
         securityService.validateAuthorization(email, Permission.CLOSE_LOAN);
-        return loanMapper.mapToDto(loanService.closeLoan(id));
+        return loanMapper.mapToDto(loanService.closeLoan(id, email));
     }
 }
