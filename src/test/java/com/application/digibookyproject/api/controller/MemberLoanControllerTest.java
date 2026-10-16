@@ -10,16 +10,15 @@ import com.application.digibookyproject.service.request.PostMemberRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -28,6 +27,7 @@ class MemberLoanControllerTest {
     private int port;
 
     private MemberDto lendingMember;
+    private MemberDto librarian;
     private BookDto book;
 
     private RequestSpecification requestAs(String email) {
@@ -64,7 +64,7 @@ class MemberLoanControllerTest {
                 "11-222-3333-4444",
                 Role.MEMBER
         ));
-        MemberDto librarian = createMember(new PostMemberRequest(
+        librarian = createMember(new PostMemberRequest(
                 "Lenn",
                 "The Librarian",
                 "lenn.librarian@example.com",
@@ -89,46 +89,61 @@ class MemberLoanControllerTest {
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
                 .as(BookDto.class);
-
     }
 
-    @Test
-    @DisplayName("getBook returns the email of the member who lent it if there is one")
-    void getBook_givenBookHasLoan_thenReturnsLenderEmail() {
-        CreateLoanDto loanDto = requestAs(lendingMember.email())
-                .body(new PostLoanRequest(lendingMember.email(), book.id()))
-                .post("/loans")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.CREATED.value())
-                .extract()
-                .as(CreateLoanDto.class);
+    @Nested
+    @DisplayName("as a librarian")
+    class AsALibrarian {
+        @Test
+        @DisplayName("given a member has one loan when getting all loans for said member then return loan")
+        void givenMemberHasOneLoan_whenGettingAllLoans_thenReturnLoan() {
+            CreateLoanDto loanDto = requestAs(lendingMember.email())
+                    .body(new PostLoanRequest(lendingMember.email(), book.id()))
+                    .post("/loans")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.CREATED.value())
+                    .extract()
+                    .as(CreateLoanDto.class);
 
-        BookDto bookDto = requestAs("")
-                .get("books/" + book.id())
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .extract()
-                .as(BookDto.class);
+            CreateLoanDto[] loans = requestAs(librarian.email())
+                    .get("/users/%s/loans".formatted(lendingMember.id()))
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.OK.value())
+                    .extract()
+                    .as(CreateLoanDto[].class);
 
-        assertEquals(lendingMember.id(), bookDto.loanInfoDto().memberId());
-        assertEquals(loanDto.id(), bookDto.loanInfoDto().loanId());
-        assertEquals(bookDto.isbn(), bookDto.loanInfoDto().isbn());
-        assertEquals(loanDto.dueDate(), bookDto.loanInfoDto().dueDate());
+            Assertions.assertThat(loans.length).isEqualTo(1);
+            Assertions.assertThat(loanDto).isEqualTo(loans[0]);
+        }
+
+        @Test
+        @DisplayName("given a member has no loan when getting all loans for said member then return empty list")
+        void givenMemberHasNoLoan_whenGettingAllLoans_thenReturnEmptyList() {
+            CreateLoanDto[] loans = requestAs(librarian.email())
+                    .get("/users/%s/loans".formatted(lendingMember.id()))
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.OK.value())
+                    .extract()
+                    .as(CreateLoanDto[].class);
+
+            Assertions.assertThat(loans).isEmpty();
+        }
     }
 
-    @Test
-    @DisplayName("getBook returns no email if there is no loan")
-    void getBook_givenBookHasNoLoan_thenReturnsNoLenderEmail() {
-        BookDto bookDto = requestAs("")
-                .get("books/" + book.id())
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .extract()
-                .as(BookDto.class);
-
-        assertNull(bookDto.loanInfoDto());
+    @Nested
+    @DisplayName("as an regular member")
+    class AsARegularMember {
+        @Test
+        @DisplayName("getting all loans returns forbidden status code")
+        void whenGettingAllLoans_thenReturnForbidden() {
+            requestAs(lendingMember.email())
+                    .get("/users/%s/loans".formatted(lendingMember.id()))
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.FORBIDDEN.value());
+        }
     }
 }

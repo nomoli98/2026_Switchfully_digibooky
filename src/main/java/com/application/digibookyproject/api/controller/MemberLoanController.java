@@ -2,6 +2,7 @@ package com.application.digibookyproject.api.controller;
 
 import com.application.digibookyproject.api.dto.CreateLoanDto;
 import com.application.digibookyproject.api.mapper.LoanMapper;
+import com.application.digibookyproject.domain.member.Permission;
 import com.application.digibookyproject.service.LoanService;
 import com.application.digibookyproject.service.SecurityService;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,10 +29,9 @@ public class MemberLoanController {
             @Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email,
             @PathVariable UUID userId
     ) {
-        //securityService.validateAuthorization(email, Permission.VIEW_LOANS);
-        //return loanService.getAllLoansForMember(userId).stream()
-        //        .map(loanMapper::mapToDto)
-        //        .toList();
-        return List.of();
+        securityService.validateAuthorization(email, Permission.VIEW_LOANS);
+        return loanService.getAllLoansForMember(userId).stream()
+                .map(loanMapper::mapToDto)
+                .toList();
     }
 }
