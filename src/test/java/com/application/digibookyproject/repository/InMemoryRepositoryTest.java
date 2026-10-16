@@ -18,7 +18,7 @@ class InMemoryRepositoryTest {
     @Test
     @DisplayName("getting a book that exists returns it")
     void get_givenBookIsStored_thenReturnBook() {
-        InMemoryRepository<Book> bookRepository = new InMemoryRepository<>();
+        InMemoryRepository<Book> bookRepository = new InMemoryRepository<>(Book.class);
         Author author = new Author("Sammy", "Smart");
         Book book = new Book("isbn", "How to be awesome", author);
 
@@ -34,7 +34,7 @@ class InMemoryRepositoryTest {
     @Test
     @DisplayName("getting a book that doesn't exist returns null")
     void get_givenBookDoesNotExist_thenReturnsNull() {
-        InMemoryRepository<Book> bookRepository = new InMemoryRepository<>();
+        InMemoryRepository<Book> bookRepository = new InMemoryRepository<>(Book.class);
 
         assertFalse(bookRepository.get(UUID.randomUUID()).isPresent());
     }
@@ -42,7 +42,7 @@ class InMemoryRepositoryTest {
     @Test
     @DisplayName("getting all books returns a list")
     void getAll_givenBooksExists_thenReturnsBooks() {
-        InMemoryRepository<Book> bookRepository = new InMemoryRepository<>();
+        InMemoryRepository<Book> bookRepository = new InMemoryRepository<>(Book.class);
         Author author = new Author("Sammy", "Smart");
         Book book = new Book("isbn", "How to be awesome", author);
         Book book1 = new Book("otherIsbn", "How to be awesomer", author);

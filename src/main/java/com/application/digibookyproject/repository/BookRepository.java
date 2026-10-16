@@ -6,6 +6,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class BookRepository extends InMemoryRepository<Book> {
 
+    public BookRepository() {
+        super(Book.class);
+    }
+
     public Book save(Book book) {
         logger.debug("Saving book with ISBN {}", book.getIsbn());
         return saveWithId(book.getId(), book);
