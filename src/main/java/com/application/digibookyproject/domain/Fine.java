@@ -1,23 +1,42 @@
 package com.application.digibookyproject.domain;
 
-import com.application.digibookyproject.service.exception.BadRequestException;
-
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.UUID;
 
 public class Fine {
-    private final UUID uuid;
+    private final UUID id;
     private final Loan loan;
+    private int amount;
 
-    public Fine(UUID uuid, Loan loan) {
-        this.uuid = uuid;
+    public Fine(Loan loan) {
+        this.id = UUID.randomUUID();
         this.loan = loan;
+        this.amount = calculateFine(loan.getDueDate());
     }
 
-    public static int calculateFine(LocalDate dueDate){
-        if(dueDate.isAfter(LocalDate.now())) throw BadRequestException.loanNotOverdueYet();
-        int fullWeeks = Period.between(dueDate, LocalDate.now()).getDays() / 7;
+    public UUID getId() {
+        return id;
+    }
+
+    public Loan getLoan() {
+        return loan;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void updateAmount() {
+        this.amount = calculateFine(loan.getDueDate());
+    }
+
+    public int calculateFine(LocalDate dueDate) {
+        return calculateFine(dueDate, LocalDate.now());
+    }
+
+    public int calculateFine(LocalDate dueDate, LocalDate returnDate){
+        int fullWeeks = Period.between(dueDate, returnDate).getDays() / 7;
         return 5 + 2 * fullWeeks;
     }
 }

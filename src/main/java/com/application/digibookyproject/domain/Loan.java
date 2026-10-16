@@ -1,6 +1,7 @@
 package com.application.digibookyproject.domain;
 
 import com.application.digibookyproject.domain.member.Member;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -12,12 +13,14 @@ public class Loan {
     private final Member member;
     private final Book book;
     private final LocalDate dueDate;
+    private LocalDate returnDate;
 
     public Loan(Member member, Book book, LocalDate dueDate) {
         this.id = UUID.randomUUID();
         this.member = member;
         this.book = book;
         this.dueDate = dueDate;
+        this.returnDate = null;
     }
 
     public UUID getId() {
@@ -35,4 +38,16 @@ public class Loan {
     public LocalDate getDueDate() {
         return dueDate;
     }
+
+    public LocalDate getReturnDate() { return returnDate;}
+
+    public void setReturnDate() {
+        setReturnDate(LocalDate.now());
+    }
+
+    public void setReturnDate(LocalDate returnDate){
+        this.returnDate = returnDate;}
+
+
+
 }

@@ -50,14 +50,20 @@ public class LoanService {
         return loanRepository.save(loan);
     }
 
-    public Loan closeLoan(UUID loanId, String email){
+    public Loan closeLoan(UUID loanId, String email) {
         Loan existingLoan = loanRepository.get(loanId).orElseThrow(() -> NotFoundException.loanNotFound(loanId));
         if (!existingLoan.getMember().getEmail().equals(email)) throw BadRequestException.notMatchingUser();
-        return loanRepository.deleteWithId(loanId, existingLoan);
+//        return loanRepository.deleteWithId(loanId, existingLoan);
+        existingLoan.setReturnDate();
+        return loanRepository.save(existingLoan);
     }
 
-    public List<Loan> getAllOverdueLoan(){
-        return loanRepository.getAll().stream().filter(l -> l.getDueDate().isBefore(LocalDate.now())).toList();
+    public List<Loan> getAllOverdueLoan() {
+        return loanRepository.getAll()
+                .stream()
+                .filter(l ->
+                        l.getDueDate().isBefore(LocalDate.now()) &&
+                        l.getReturnDate() == null).toList();
     }
 
     private void verifyFilledIn(String value, String parameterName) {
