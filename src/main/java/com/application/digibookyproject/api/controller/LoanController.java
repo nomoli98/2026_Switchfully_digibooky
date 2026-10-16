@@ -1,6 +1,7 @@
 package com.application.digibookyproject.api.controller;
 
 import com.application.digibookyproject.api.dto.CreateLoanDto;
+import com.application.digibookyproject.api.dto.MemberDto;
 import com.application.digibookyproject.api.mapper.LoanMapper;
 import com.application.digibookyproject.domain.member.Permission;
 import com.application.digibookyproject.service.LoanService;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -40,5 +42,15 @@ public class LoanController {
     public CreateLoanDto closeLoan(@Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email, @PathVariable UUID id) {
         securityService.validateAuthorization(email, Permission.CLOSE_LOAN);
         return loanMapper.mapToDto(loanService.closeLoan(id, email));
+    }
+
+    @SecurityRequirement(name = "Authorization")
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<CreateLoanDto> getAllOverdueLoans(@Parameter(hidden = true) @RequestHeader(value = "Authorization", required = false) String email) {
+        securityService.validateAuthorization(email, Permission.VIEW_MEMBERS);
+        return loanService.getAllOverdueLoan().stream()
+                .map(loanMapper::mapToDto)
+                .toList();
     }
 }
