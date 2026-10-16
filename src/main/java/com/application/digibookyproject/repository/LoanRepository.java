@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,5 +20,11 @@ public class LoanRepository extends InMemoryRepository<Loan> {
 
     public Optional<Loan> getLoanWithBookId(UUID bookId) {
         return getOptional(book -> book.getId().equals(bookId));
+    }
+
+    public List<Loan> getAllLoansWithMemberId(UUID memberId) {
+        return getAll().stream()
+                .filter(loan -> loan.getMember().getId() == memberId)
+                .toList();
     }
 }
