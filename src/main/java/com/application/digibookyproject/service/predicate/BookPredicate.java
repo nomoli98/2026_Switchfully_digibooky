@@ -1,7 +1,7 @@
 package com.application.digibookyproject.service.predicate;
 
-import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
 import com.application.digibookyproject.domain.Book;
+import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
 
 public class BookPredicate {
     private final GetBooksWithFilterRequest dto;
@@ -18,10 +18,10 @@ public class BookPredicate {
         if (dto.title() != null && !isContained(book.getTitle(), dto.title())) return false;
         if (dto.isbn() != null && !book.getIsbn().equals(dto.isbn())) return false;
         if (dto.firstName() != null && !isContained(
-                book.getAuthor().getFirstname(),
+                book.getAuthor().firstname(),
                 dto.firstName()
         )) return false;
-        if (dto.lastName() != null && !isContained(book.getAuthor().getLastname(), dto.lastName()))
+        if (dto.lastName() != null && !isContained(book.getAuthor().lastname(), dto.lastName()))
             return false;
         return true;
     }

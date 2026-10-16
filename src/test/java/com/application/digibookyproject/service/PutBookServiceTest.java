@@ -43,7 +43,7 @@ class PutBookServiceTest {
         request = new PutBookRequest(book.getId(), "Converge", "Jane", "Doe");
         Book updatedBook = service.updateBook(request);
         Assertions.assertThat(updatedBook.getTitle()).isNotEqualTo("Convert");
-        Assertions.assertThat(updatedBook.getAuthor().getFirstname()).isNotEqualTo("Jon");
+        Assertions.assertThat(updatedBook.getAuthor().firstname()).isNotEqualTo("Jon");
     }
 
     @DisplayName("Put Book with a random invalid UUID to throw an NotFoundException")

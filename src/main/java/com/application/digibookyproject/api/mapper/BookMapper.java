@@ -27,8 +27,8 @@ public class BookMapper {
                 book.getIsbn(),
                 book.getTitle(),
                 new AuthorDto(
-                        author.getFirstname(),
-                        author.getLastname()
+                        author.firstname(),
+                        author.lastname()
                 ),
                 loanInfoDto
         );

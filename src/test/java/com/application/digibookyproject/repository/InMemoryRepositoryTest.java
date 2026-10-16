@@ -27,8 +27,8 @@ class InMemoryRepositoryTest {
         Book resultBook = bookRepository.get(book.getId()).orElseThrow();
         assertEquals(book, resultBook);
         assertEquals(book.getTitle(), resultBook.getTitle());
-        assertEquals(author.getFirstname(), resultBook.getAuthor().getFirstname());
-        assertEquals(author.getLastname(), resultBook.getAuthor().getLastname());
+        assertEquals(author.firstname(), resultBook.getAuthor().firstname());
+        assertEquals(author.lastname(), resultBook.getAuthor().lastname());
     }
 
     @Test
