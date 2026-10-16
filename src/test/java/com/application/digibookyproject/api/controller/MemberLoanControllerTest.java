@@ -95,7 +95,7 @@ class MemberLoanControllerTest {
     @Test
     @DisplayName("getBook returns the email of the member who lent it if there is one")
     void getBook_givenBookHasLoan_thenReturnsLenderEmail() {
-        requestAs(lendingMember.email())
+        CreateLoanDto loanDto = requestAs(lendingMember.email())
                 .body(new PostLoanRequest(lendingMember.email(), book.id()))
                 .post("/loans")
                 .then()
@@ -112,7 +112,10 @@ class MemberLoanControllerTest {
                 .extract()
                 .as(BookDto.class);
 
-        assertEquals(lendingMember.email(), bookDto.loanInfoDto().email());
+        assertEquals(lendingMember.id(), bookDto.loanInfoDto().memberId());
+        assertEquals(loanDto.id(), bookDto.loanInfoDto().loanId());
+        assertEquals(bookDto.isbn(), bookDto.loanInfoDto().isbn());
+        assertEquals(loanDto.dueDate(), bookDto.loanInfoDto().dueDate());
     }
 
     @Test

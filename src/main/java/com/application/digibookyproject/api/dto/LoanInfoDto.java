@@ -1,6 +1,12 @@
 package com.application.digibookyproject.api.dto;
 
+import java.time.LocalDate;
+import java.util.UUID;
+
 public record LoanInfoDto(
-        String email
+        UUID memberId,
+        UUID loanId,
+        String isbn,
+        LocalDate dueDate
 ) {
 }
