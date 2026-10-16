@@ -11,7 +11,8 @@ public enum Role {
     LIBRARIAN(List.of(
             Permission.REGISTER_BOOK,
             Permission.UPDATE_BOOK,
-            Permission.DELETE_BOOK
+            Permission.DELETE_BOOK,
+            Permission.VIEW_OVERDUE_LOANS
     )),
     MEMBER(List.of());
 

@@ -10,6 +10,7 @@ import com.application.digibookyproject.service.request.PostLoanRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class LoanService {
@@ -41,6 +42,10 @@ public class LoanService {
                 LocalDate.now().plusWeeks(Loan.DEFAULT_LOAN_DURATION_IN_WEEKS)
         );
         return loanRepository.save(loan);
+    }
+
+    public List<Loan> getAllOverdueLoans(){
+        return loanRepository.getAll().stream().filter(l -> l.getDueDate().isBefore(LocalDate.now())).toList();
     }
 
     private void verifyFilledIn(String value, String parameterName) {
