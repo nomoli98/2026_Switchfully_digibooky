@@ -1,6 +1,6 @@
 package com.application.digibookyproject.api.controller;
 
-import com.application.digibookyproject.api.dto.LoanDto;
+import com.application.digibookyproject.api.dto.CreateLoanDto;
 import com.application.digibookyproject.api.mapper.LoanMapper;
 import com.application.digibookyproject.domain.member.Permission;
 import com.application.digibookyproject.service.LoanService;

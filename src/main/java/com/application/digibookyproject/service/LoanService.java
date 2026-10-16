@@ -10,6 +10,7 @@ import com.application.digibookyproject.service.request.PostLoanRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -22,6 +23,10 @@ public class LoanService {
         this.loanRepository = loanRepository;
         this.memberService = memberService;
         this.bookService = bookService;
+    }
+
+    public List<Loan> getAllLoansForMember(UUID memberId) {
+        return loanRepository.getAllLoansWithMemberId(memberId);
     }
 
     public Loan createLoan(PostLoanRequest request) {

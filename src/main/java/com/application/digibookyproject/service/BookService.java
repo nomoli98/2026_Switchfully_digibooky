@@ -1,14 +1,14 @@
 package com.application.digibookyproject.service;
 
 import com.application.digibookyproject.domain.Author;
+import com.application.digibookyproject.domain.Book;
+import com.application.digibookyproject.domain.Loan;
+import com.application.digibookyproject.repository.BookRepository;
+import com.application.digibookyproject.repository.LoanRepository;
 import com.application.digibookyproject.service.exception.BadRequestException;
 import com.application.digibookyproject.service.exception.NotFoundException;
-import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
-import com.application.digibookyproject.domain.Book;
-import com.application.digibookyproject.repository.BookRepository;
-import com.application.digibookyproject.service.exception.NotFoundException;
 import com.application.digibookyproject.service.predicate.BookPredicate;
-import com.application.digibookyproject.repository.BookRepository;
+import com.application.digibookyproject.service.request.GetBooksWithFilterRequest;
 import com.application.digibookyproject.service.request.PostBookRequest;
 import com.application.digibookyproject.service.request.PutBookRequest;
 import org.springframework.stereotype.Service;
@@ -20,9 +20,11 @@ import java.util.UUID;
 @Service
 public class BookService {
     private final BookRepository bookRepository;
+    private final LoanRepository loanRepository;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, LoanRepository loanRepository) {
         this.bookRepository = bookRepository;
+        this.loanRepository = loanRepository;
     }
 
     public List<Book> getAllBooks(GetBooksWithFilterRequest queryDto) {
@@ -34,7 +36,12 @@ public class BookService {
     }
 
     public Book getBookById(UUID id) {
-        return bookRepository.get(id).orElseThrow(() -> NotFoundException.bookNotFound(id));
+        Book book = bookRepository.get(id)
+                .orElseThrow(() -> NotFoundException.bookNotFound(id));
+        Loan loan = loanRepository.getLoanWithBookId(id)
+                .orElse(null);
+        book.setLoan(loan);
+        return book;
     }
 
     private boolean checkIsbn(String isbn) {
@@ -60,7 +67,7 @@ public class BookService {
         );
         return bookRepository.save(book);
     }
-    
+
     public Book updateBook(PutBookRequest request) {
         verifyFilledIn(request.title(), "title");
         verifyFilledIn(request.authorFirstName(), "author Firstname");

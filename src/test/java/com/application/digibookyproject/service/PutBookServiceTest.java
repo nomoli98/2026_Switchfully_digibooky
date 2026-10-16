@@ -2,7 +2,7 @@ package com.application.digibookyproject.service;
 
 import com.application.digibookyproject.domain.Book;
 import com.application.digibookyproject.repository.BookRepository;
-import com.application.digibookyproject.service.exception.BadRequestException;
+import com.application.digibookyproject.repository.LoanRepository;
 import com.application.digibookyproject.service.exception.NotFoundException;
 import com.application.digibookyproject.service.request.PostBookRequest;
 import com.application.digibookyproject.service.request.PutBookRequest;
@@ -11,10 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PutBookServiceTest {
     BookRepository repository;
@@ -22,12 +19,13 @@ class PutBookServiceTest {
     BookService service;
     PostBookRequest postRequest;
     Book book;
-
+    LoanRepository loanRepository;
 
     @BeforeEach
     void initRepository() {
         repository = new BookRepository();
-        service = new BookService(repository);
+        loanRepository = new LoanRepository();
+        service = new BookService(repository, loanRepository);
 
         postRequest = new PostBookRequest(
                 "978-1-1234-5678-9",

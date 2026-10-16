@@ -8,6 +8,7 @@ public class Book {
     private String title;
     private Author author;
     private final UUID id;
+    private Loan loan;
 
     public Book(String isbn, String title, Author author) {
         this.author = author;
@@ -40,10 +41,18 @@ public class Book {
         this.author = author;
     }
 
+    public void setLoan(Loan loan) {
+        this.loan = loan;
+    }
+
+    public Loan getLoan() {
+        return loan;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Book book = (Book)o;
+        Book book = (Book) o;
         return Objects.equals(id, book.id);
     }
 
