@@ -112,7 +112,7 @@ class MemberLoanControllerTest {
                 .extract()
                 .as(BookDto.class);
 
-        assertEquals(lendingMember.email(), bookDto.loanDto().email());
+        assertEquals(lendingMember.email(), bookDto.loanInfoDto().email());
     }
 
     @Test
@@ -126,6 +126,6 @@ class MemberLoanControllerTest {
                 .extract()
                 .as(BookDto.class);
 
-        assertNull(bookDto.loanDto());
+        assertNull(bookDto.loanInfoDto());
     }
 }

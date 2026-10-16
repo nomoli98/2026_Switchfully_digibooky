@@ -7,6 +7,6 @@ public record BookDto(
         String isbn,
         String title,
         AuthorDto authorDto,
-        LoanDto loanDto
+        LoanInfoDto loanInfoDto
 ) {
 }

@@ -1,6 +1,6 @@
 package com.application.digibookyproject.api.dto;
 
-public record LoanDto(
+public record LoanInfoDto(
         String email
 ) {
 }
