@@ -4,6 +4,7 @@ import com.application.digibookyproject.domain.Author;
 import com.application.digibookyproject.domain.Book;
 import com.application.digibookyproject.repository.BookRepository;
 import com.application.digibookyproject.repository.LoanRepository;
+import com.application.digibookyproject.service.exception.NotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,11 +15,9 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DeleteBookServiceTest {
-
     BookRepository repository;
     Book book;
     BookService service;
-    UUID id;
     LoanRepository loanRepository;
 
     @BeforeEach
@@ -35,18 +34,20 @@ class DeleteBookServiceTest {
                 )
         );
         repository.save(book);
-        id = repository.getAll().getFirst().getId();
     }
 
     @Test
     @DisplayName("Deleting an existing book return the deleted book")
     void givenExistingBookToDelete_whenCallingDeletingBook_thenReturnsTheDeletedBook() {
-        assertEquals(book.getIsbn(), service.deleteBook(id).getIsbn());
+        assertEquals(book.getIsbn(), service.deleteBook(book.getId()).getIsbn());
     }
 
     @Test
     @DisplayName("Deleting an invalid book throws an exception")
     void givenNotExistingBookToDelete_whenCallingDeletingBook_thenThrowsException() {
-        Assertions.assertThatThrownBy(() -> service.deleteBook(UUID.randomUUID())).isInstanceOf(Exception.class);
+        Assertions.assertThatThrownBy(
+                        () -> service.deleteBook(UUID.randomUUID()))
+                .isInstanceOf(NotFoundException.class
+                );
     }
 }

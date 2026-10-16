@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BookServiceTest {
     private BookRepository bookRepository;
@@ -52,10 +52,7 @@ class BookServiceTest {
     @DisplayName("getting one book by id when it doesn't exist")
     void getOne_givenBookDoesntExist_thenThrowNotFoundException() {
         UUID newId = UUID.randomUUID();
-        assertThrows(
-                NotFoundException.class,
-                () -> bookRepository.get(newId).orElseThrow(() -> NotFoundException.bookNotFound(newId))
-        );
+        assertTrue(bookRepository.get(newId).isEmpty());
     }
 
     @Test

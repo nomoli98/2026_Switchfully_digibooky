@@ -19,7 +19,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,13 +34,12 @@ class DeleteLoanServiceTest {
 
     @BeforeEach
     void initRepository() {
-        PostBookRequest bookRequest = new PostBookRequest(
+        bookService.createBook(new PostBookRequest(
                 "978-1-1234-5678-9",
                 "le title",
                 "le author firstname",
-                "le author last name");
-        bookService.createBook(bookRequest);
-        PostMemberRequest memberRequest = new PostMemberRequest(
+                "le author last name"));
+        memberService.createMember(new PostMemberRequest(
                 "Ron",
                 "Reader",
                 "ronreader@reading.com",
@@ -50,10 +48,14 @@ class DeleteLoanServiceTest {
                 8000,
                 "Readsville",
                 "12-345-6789",
-                Role.MEMBER);
-        memberService.createMember(memberRequest);
-        Book book = bookService.getAllBooks(new GetBooksWithFilterRequest(null, null, null, null)).getFirst();
-        Member member = memberService.getAllMembers().stream().filter(m->m.getFirstname().equals("Ron")).findAny().get();
+                Role.MEMBER));
+        Book book = bookService.getAllBooks(
+                new GetBooksWithFilterRequest(null, null, null, null)
+        ).getFirst();
+        Member member = memberService.getAllMembers().stream()
+                .filter(m -> m.getFirstname().equals("Ron"))
+                .findAny()
+                .orElseThrow();
         PostLoanRequest request = new PostLoanRequest(member.getEmail(), book.getId());
         loan = loanService.createLoan(request);
     }
@@ -72,13 +74,13 @@ class DeleteLoanServiceTest {
     }
 
     @Test
-    @DisplayName("deleting an non existing loan throws a notFoundException")
+    @DisplayName("deleting an non existing loan throws a NotFoundException")
     void givenAnNonExistingLoanId_WhenDeleted_ThrowsNotFoundException() {
         assertThrows(NotFoundException.class, () -> loanService.closeLoan(UUID.randomUUID(), "admin@example.com"));
     }
 
     @Test
-    @DisplayName("deleting a loan that is not the user's throws a badRequestException")
+    @DisplayName("deleting a loan that is not the user's throws a BadRequestException")
     void givenAnLoanThatIsNotTheUsers_WhenDeleted_ThrowsBadRequestException() {
         assertThrows(BadRequestException.class, () -> loanService.closeLoan(loan.getId(), "admin@example.com"));
     }
