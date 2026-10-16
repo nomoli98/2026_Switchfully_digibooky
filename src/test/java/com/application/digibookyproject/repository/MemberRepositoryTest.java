@@ -1,7 +1,7 @@
 package com.application.digibookyproject.repository;
 
 import com.application.digibookyproject.domain.member.Member;
-import com.application.digibookyproject.factory.MemberTestData;
+import com.application.digibookyproject.populate.TestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MemberRepositoryTest {
     private MemberRepository memberRepository;
@@ -17,7 +18,7 @@ class MemberRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        memberRepository = MemberTestData.createRepository(List.of(storedJulie));
+        memberRepository = TestData.populateMemberRepository(List.of(storedJulie));
     }
 
     @Test

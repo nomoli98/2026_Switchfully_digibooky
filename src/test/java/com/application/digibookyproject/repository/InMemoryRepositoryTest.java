@@ -3,7 +3,7 @@ package com.application.digibookyproject.repository;
 import com.application.digibookyproject.domain.Author;
 import com.application.digibookyproject.domain.Book;
 import com.application.digibookyproject.domain.member.Member;
-import com.application.digibookyproject.factory.MemberTestData;
+import com.application.digibookyproject.populate.TestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -57,15 +57,15 @@ class InMemoryRepositoryTest {
     @Test
     @DisplayName("getting an optional when predicate is valid returns a member")
     void getOptional_whenPredicateIsValid_thenReturnMember() {
-        InMemoryRepository<Member> repository = MemberTestData.createRepository(List.of());
+        InMemoryRepository<Member> repository = TestData.populateMemberRepository(List.of());
 
         assertThat(repository.getOptional(member -> member.getLastname().equals("Willems")).isPresent()).isTrue();
     }
 
     @Test
-    @DisplayName("getting an optional when predicate is invalid returns a member")
+    @DisplayName("getting an optional when predicate is invalid returns empty optional")
     void getOptional_whenPredicateIsInvalid_thenReturnMember() {
-        InMemoryRepository<Member> repository = MemberTestData.createRepository(List.of());
+        InMemoryRepository<Member> repository = TestData.populateMemberRepository(List.of());
 
         assertThat(repository.getOptional(member -> member.getLastname().equals("Jan")).isPresent()).isFalse();
     }

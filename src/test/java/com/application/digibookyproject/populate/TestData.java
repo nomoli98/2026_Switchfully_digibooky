@@ -1,12 +1,12 @@
-package com.application.digibookyproject.factory;
+package com.application.digibookyproject.populate;
 
 import com.application.digibookyproject.domain.member.Member;
 import com.application.digibookyproject.repository.MemberRepository;
 
 import java.util.List;
 
-public class MemberTestData {
-    public static MemberRepository createRepository(List<Member> presentMembers) {
+public class TestData {
+    public static MemberRepository populateMemberRepository(List<Member> presentMembers) {
         MemberRepository repository = new MemberRepository();
         repository.save(new Member("Peeters", "Jan", "jan.peeters@example.com", "Kerkstraat", "12", 9000, "Gent", "85.04.15-123.45"));
         repository.save(new Member("Janssens", "Marie", "marie.janssens@example.com", "Stationsstraat", "24", 2800, "Mechelen", "90.07.22-234.56"));

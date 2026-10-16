@@ -2,7 +2,7 @@ package com.application.digibookyproject.service;
 
 import com.application.digibookyproject.domain.member.Member;
 import com.application.digibookyproject.domain.member.Role;
-import com.application.digibookyproject.factory.MemberTestData;
+import com.application.digibookyproject.populate.TestData;
 import com.application.digibookyproject.repository.MemberRepository;
 import com.application.digibookyproject.service.exception.BadRequestException;
 import com.application.digibookyproject.service.exception.ConflictException;
@@ -25,7 +25,7 @@ class MemberServiceTest {
 
     @BeforeEach
     void setUp() {
-        MemberRepository memberRepository = MemberTestData.createRepository(List.of());
+        MemberRepository memberRepository = TestData.populateMemberRepository(List.of());
         memberService = new MemberService(memberRepository);
     }
 
