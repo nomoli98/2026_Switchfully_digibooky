@@ -15,6 +15,8 @@ import java.util.UUID;
 
 @Service
 public class LoanService {
+    private static final int DEFAULT_LOAN_DURATION_IN_WEEKS = 3;
+
     private final LoanRepository loanRepository;
     private final MemberService memberService;
     private final BookService bookService;
@@ -30,7 +32,8 @@ public class LoanService {
     }
 
     public Loan createLoan(PostLoanRequest request) {
-        verifyFilledIn(request.memberEmail(), "member email");
+        if (request.memberEmail() == null || request.memberEmail().isEmpty())
+            throw BadRequestException.loanParameterRequired("member email");
         if (request.bookId() == null)
             throw BadRequestException.loanParameterRequired("book id");
         Book book = bookService.getBookById(request.bookId());
@@ -44,24 +47,19 @@ public class LoanService {
         Loan loan = new Loan(
                 member,
                 book,
-                LocalDate.now().plusWeeks(Loan.DEFAULT_LOAN_DURATION_IN_WEEKS)
+                LocalDate.now().plusWeeks(DEFAULT_LOAN_DURATION_IN_WEEKS)
         );
         return loanRepository.save(loan);
     }
 
-    public Loan closeLoan(UUID loanId, String email){
+    public Loan closeLoan(UUID loanId, String email) {
         Loan existingLoan = loanRepository.get(loanId).orElseThrow(() -> NotFoundException.loanNotFound(loanId));
-        if (!existingLoan.getMember().getEmail().equals(email)) throw BadRequestException.NotMatchingUser();
+        if (!existingLoan.getMember().getEmail().equals(email)) throw BadRequestException.notMatchingUser();
         return loanRepository.deleteWithId(loanId, existingLoan);
     }
 
-    public List<Loan> getAllOverdueLoan(){
+    public List<Loan> getAllOverdueLoan() {
         return loanRepository.getAll().stream().filter(l -> l.getDueDate().isBefore(LocalDate.now())).toList();
-    }
-
-    private void verifyFilledIn(String value, String parameterName) {
-        if (value == null || value.isEmpty())
-            throw BadRequestException.loanParameterRequired(parameterName);
     }
 
     private boolean isAvailable(Book book) {

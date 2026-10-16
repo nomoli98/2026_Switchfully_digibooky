@@ -8,6 +8,11 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 class PostBookServiceTest {
     BookRepository repository;
@@ -34,147 +39,57 @@ class PostBookServiceTest {
         Assertions.assertThat(service.createBook(request).getIsbn()).isEqualTo("978-1-1234-5678-9");
     }
 
-    @Test
-    @DisplayName("Create Book with a correct isbn with spaces")
-    void givenValidRequestWithSpaces_whenCallingCreateBook_thenAnExceptionIsThrown() {
-        request = new PostBookRequest(
-                "978 1 1234 5678 9",
-                "le title",
-                "le author firstname",
-                "le author last name"
-        );
-        Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(BadRequestException.class);
+    public static Stream<Arguments> badIsbnStream() {
+        return Stream.of(
+                        "978 1 1234 5678 9",
+                        "9781123456789",
+                        "",
+                        null,
+                        "978-12-1234-5678-9",
+                        "975-1-1234-5678-9"
+
+                )
+                .map(Arguments::of);
     }
 
-    @Test
-    @DisplayName("Create Book with a correct isbn without -")
-    void givenValidRequestWithOnlyInt_whenCallingCreateBook_thenAnExceptionIsThrown() {
-        request = new PostBookRequest(
-                "9781123456789",
-                "le title",
-                "le author firstname",
-                "le author last name"
-        );
-        Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(BadRequestException.class);
+    @ParameterizedTest(name = "isbn {0}")
+    @MethodSource("badIsbnStream")
+    @DisplayName("Bad isbn numbers")
+    void givenBadIsbn_whenCreateBook_thenThrowException(String isbn) {
+        Assertions.assertThatThrownBy(
+                () -> service.createBook(new PostBookRequest(
+                        isbn,
+                        "title",
+                        "first",
+                        "last"
+                ))
+        ).isInstanceOf(BadRequestException.class);
     }
 
-    @Test
-    @DisplayName("Create Book with an empty isbn in the request")
-    void givenEmptyIsbnInRequest_whenCallingCreateBook_thenAnExceptionIsThrown() {
-        request = new PostBookRequest(
-                "",
-                "le title",
-                "le author firstname",
-                "le author last name"
+    public static Stream<Arguments> badRequestStream() {
+        return Stream.of(
+                Arguments.of("", "le author firstname", "le author last name"),
+                Arguments.of(null, "le author firstname", "le author last name"),
+                Arguments.of("le title", "", "le author last name"),
+                Arguments.of("le title", null, "le author last name"),
+                Arguments.of("le title", "le author firstname", ""),
+                Arguments.of("le title", "le author firstname", null)
         );
-        Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(BadRequestException.class);
     }
 
-    @Test
-    @DisplayName("Create Book with a null isbn in the request")
-    void givenNullIsbnInRequest_whenCallingCreateBook_thenAnExceptionIsThrown() {
-        request = new PostBookRequest(
-                null,
-                "le title",
-                "le author firstname",
-                "le author last name"
-        );
-        Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(BadRequestException.class);
-    }
-
-    @Test
-    @DisplayName("Create Book with an invalid isbn pattern in the request")
-    void givenInvalidIsbnPatternInRequest_whenCallingCreateBook_thenAnExceptionIsThrown() {
-        request = new PostBookRequest(
-                "978-12-1234-5678-9",
-                "le title",
-                "le author firstname",
-                "le author last name"
-        );
-        Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(BadRequestException.class);
-    }
-
-    @Test
-    @DisplayName("Create Book with an invalid isbn number in the request")
-    void givenInvalidIsbnNumberInRequest_whenCallingCreateBook_thenAnExceptionIsThrown() {
-        request = new PostBookRequest(
-                "975-1-1234-5678-9",
-                "le title",
-                "le author firstname",
-                "le author last name"
-        );
-        Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(BadRequestException.class);
-    }
-
-    @Test
-    @DisplayName("Create Book with an empty title in the request")
-    void givenEmptyTitleInRequest_whenCallingCreateBook_thenAnExceptionIsThrown() {
-        request = new PostBookRequest(
-                "978-1-1234-5678-9",
-                "",
-                "le author firstname",
-                "le author last name"
-        );
-        Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(BadRequestException.class);
-    }
-
-    @Test
-    @DisplayName("Create Book with a null title in the request")
-    void givenNullTitleInRequest_whenCallingCreateBook_thenAnExceptionIsThrown() {
-        request = new PostBookRequest(
-                "978-1-1234-5678-9",
-                null,
-                "le author firstname",
-                "le author last name"
-        );
-        Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(BadRequestException.class);
-    }
-
-    @Test
-    @DisplayName("Create Book with an empty author first name in the request")
-    void givenEmptyAuthorFirstNameInRequest_whenCallingCreateBook_thenAnExceptionIsThrown() {
-        request = new PostBookRequest(
-                "978-1-1234-5678-9",
-                "le title",
-                "",
-                "le author last name"
-        );
-        Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(BadRequestException.class);
-    }
-
-    @Test
-    @DisplayName("Create Book with a null author first name in the request")
-    void givenNullAuthorFirstNameInRequest_whenCallingCreateBook_thenAnExceptionIsThrown() {
-        request = new PostBookRequest(
-                "978-1-1234-5678-9",
-                "le title",
-                null,
-                "le author last name"
-        );
-        Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(BadRequestException.class);
-    }
-
-    @Test
+    @ParameterizedTest(name = "title: {0} | author: {1} {2}")
     @DisplayName("Create Book with an empty author last name in the request")
-    void givenEmptyAuthorLastNameInRequest_whenCallingCreateBook_thenAnExceptionIsThrown() {
-        request = new PostBookRequest(
+    @MethodSource("badRequestStream")
+    void givenBadRequest_whenCallingCreateBook_thenAnExceptionIsThrown(
+            String title,
+            String firstName,
+            String lastName
+    ) {
+        Assertions.assertThatThrownBy(() -> service.createBook(new PostBookRequest(
                 "978-1-1234-5678-9",
-                "le title",
-                "le author firstname",
-                ""
-        );
-        Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(BadRequestException.class);
-    }
-
-    @Test
-    @DisplayName("Create Book with a null author last name in the request")
-    void givenNullAuthorLastNameInRequest_whenCallingCreateBook_thenAnExceptionIsThrown() {
-        request = new PostBookRequest(
-                "978-1-1234-5678-9",
-                "le title",
-                "le author firstname",
-                null
-        );
-        Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(BadRequestException.class);
+                title,
+                firstName,
+                lastName
+        ))).isInstanceOf(BadRequestException.class);
     }
 }

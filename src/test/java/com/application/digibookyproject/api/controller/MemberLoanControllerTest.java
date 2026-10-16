@@ -1,7 +1,7 @@
 package com.application.digibookyproject.api.controller;
 
 import com.application.digibookyproject.api.dto.BookDto;
-import com.application.digibookyproject.api.dto.CreateLoanDto;
+import com.application.digibookyproject.api.dto.LoanDto;
 import com.application.digibookyproject.api.dto.MemberDto;
 import com.application.digibookyproject.domain.member.Role;
 import com.application.digibookyproject.service.request.PostBookRequest;
@@ -97,22 +97,22 @@ class MemberLoanControllerTest {
         @Test
         @DisplayName("given a member has one loan when getting all loans for said member then return loan")
         void givenMemberHasOneLoan_whenGettingAllLoans_thenReturnLoan() {
-            CreateLoanDto loanDto = requestAs(lendingMember.email())
+            LoanDto loanDto = requestAs(lendingMember.email())
                     .body(new PostLoanRequest(lendingMember.email(), book.id()))
                     .post("/loans")
                     .then()
                     .assertThat()
                     .statusCode(HttpStatus.CREATED.value())
                     .extract()
-                    .as(CreateLoanDto.class);
+                    .as(LoanDto.class);
 
-            CreateLoanDto[] loans = requestAs(librarian.email())
+            LoanDto[] loans = requestAs(librarian.email())
                     .get("/users/%s/loans".formatted(lendingMember.id()))
                     .then()
                     .assertThat()
                     .statusCode(HttpStatus.OK.value())
                     .extract()
-                    .as(CreateLoanDto[].class);
+                    .as(LoanDto[].class);
 
             Assertions.assertThat(loans.length).isEqualTo(1);
             Assertions.assertThat(loanDto).isEqualTo(loans[0]);
@@ -121,13 +121,13 @@ class MemberLoanControllerTest {
         @Test
         @DisplayName("given a member has no loan when getting all loans for said member then return empty list")
         void givenMemberHasNoLoan_whenGettingAllLoans_thenReturnEmptyList() {
-            CreateLoanDto[] loans = requestAs(librarian.email())
+            LoanDto[] loans = requestAs(librarian.email())
                     .get("/users/%s/loans".formatted(lendingMember.id()))
                     .then()
                     .assertThat()
                     .statusCode(HttpStatus.OK.value())
                     .extract()
-                    .as(CreateLoanDto[].class);
+                    .as(LoanDto[].class);
 
             Assertions.assertThat(loans).isEmpty();
         }
@@ -135,7 +135,7 @@ class MemberLoanControllerTest {
 
     @Nested
     @DisplayName("as an regular member")
-    class AsARegularMember {
+    class WhenUnauthorized {
         @Test
         @DisplayName("getting all loans returns forbidden status code")
         void whenGettingAllLoans_thenReturnForbidden() {

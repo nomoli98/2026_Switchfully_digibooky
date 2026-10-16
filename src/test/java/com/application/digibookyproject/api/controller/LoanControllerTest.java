@@ -1,8 +1,7 @@
 package com.application.digibookyproject.api.controller;
 
-import com.application.digibookyproject.api.dto.CreateLoanDto;
+import com.application.digibookyproject.api.dto.LoanDto;
 import com.application.digibookyproject.domain.Book;
-import com.application.digibookyproject.domain.Loan;
 import com.application.digibookyproject.domain.member.Member;
 import com.application.digibookyproject.domain.member.Role;
 import com.application.digibookyproject.service.BookService;
@@ -38,7 +37,6 @@ class LoanControllerTest {
     @Test
     @DisplayName("a valid loan request saves a loan then returns it")
     void givenValidLoanRequest_whenRequested_thenReturnsLoan() {
-        //Given
         PostBookRequest bookRequest = new PostBookRequest(
                 "978-1-1234-5678-9",
                 "le title",
@@ -60,8 +58,7 @@ class LoanControllerTest {
         Member member = memberService.getAllMembers().getFirst();
         PostLoanRequest request = new PostLoanRequest(member.getEmail(), book.getId());
 
-        //When
-        CreateLoanDto loan = RestAssured
+        LoanDto loan = RestAssured
                 .given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
@@ -74,12 +71,11 @@ class LoanControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
-                .as(CreateLoanDto.class);
+                .as(LoanDto.class);
 
-        //Then
         Assertions.assertThat(loan.memberId()).isEqualTo(member.getId());
         Assertions.assertThat(loan.bookId()).isEqualTo(book.getId());
         Assertions.assertThat(loan.dueDate())
-                .isEqualTo(LocalDate.now().plusWeeks(Loan.DEFAULT_LOAN_DURATION_IN_WEEKS));
+                .isEqualTo(LocalDate.now().plusWeeks(3));
     }
 }

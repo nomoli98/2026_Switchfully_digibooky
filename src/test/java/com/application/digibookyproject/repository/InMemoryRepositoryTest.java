@@ -3,7 +3,7 @@ package com.application.digibookyproject.repository;
 import com.application.digibookyproject.domain.Author;
 import com.application.digibookyproject.domain.Book;
 import com.application.digibookyproject.domain.member.Member;
-import com.application.digibookyproject.factory.MemberTestData;
+import com.application.digibookyproject.populate.TestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ class InMemoryRepositoryTest {
     @Test
     @DisplayName("getting a book that exists returns it")
     void get_givenBookIsStored_thenReturnBook() {
-        InMemoryRepository<Book> bookRepository = new InMemoryRepository<>();
+        InMemoryRepository<Book> bookRepository = new InMemoryRepository<>(Book.class);
         Author author = new Author("Sammy", "Smart");
         Book book = new Book("isbn", "How to be awesome", author);
 
@@ -27,14 +27,14 @@ class InMemoryRepositoryTest {
         Book resultBook = bookRepository.get(book.getId()).orElseThrow();
         assertEquals(book, resultBook);
         assertEquals(book.getTitle(), resultBook.getTitle());
-        assertEquals(author.getFirstname(), resultBook.getAuthor().getFirstname());
-        assertEquals(author.getLastname(), resultBook.getAuthor().getLastname());
+        assertEquals(author.firstname(), resultBook.getAuthor().firstname());
+        assertEquals(author.lastname(), resultBook.getAuthor().lastname());
     }
 
     @Test
     @DisplayName("getting a book that doesn't exist returns null")
     void get_givenBookDoesNotExist_thenReturnsNull() {
-        InMemoryRepository<Book> bookRepository = new InMemoryRepository<>();
+        InMemoryRepository<Book> bookRepository = new InMemoryRepository<>(Book.class);
 
         assertFalse(bookRepository.get(UUID.randomUUID()).isPresent());
     }
@@ -42,7 +42,7 @@ class InMemoryRepositoryTest {
     @Test
     @DisplayName("getting all books returns a list")
     void getAll_givenBooksExists_thenReturnsBooks() {
-        InMemoryRepository<Book> bookRepository = new InMemoryRepository<>();
+        InMemoryRepository<Book> bookRepository = new InMemoryRepository<>(Book.class);
         Author author = new Author("Sammy", "Smart");
         Book book = new Book("isbn", "How to be awesome", author);
         Book book1 = new Book("otherIsbn", "How to be awesomer", author);
@@ -57,15 +57,15 @@ class InMemoryRepositoryTest {
     @Test
     @DisplayName("getting an optional when predicate is valid returns a member")
     void getOptional_whenPredicateIsValid_thenReturnMember() {
-        InMemoryRepository<Member> repository = MemberTestData.createRepository(List.of());
+        InMemoryRepository<Member> repository = TestData.populateMemberRepository(List.of());
 
         assertThat(repository.getOptional(member -> member.getLastname().equals("Willems")).isPresent()).isTrue();
     }
 
     @Test
-    @DisplayName("getting an optional when predicate is invalid returns a member")
+    @DisplayName("getting an optional when predicate is invalid returns empty optional")
     void getOptional_whenPredicateIsInvalid_thenReturnMember() {
-        InMemoryRepository<Member> repository = MemberTestData.createRepository(List.of());
+        InMemoryRepository<Member> repository = TestData.populateMemberRepository(List.of());
 
         assertThat(repository.getOptional(member -> member.getLastname().equals("Jan")).isPresent()).isFalse();
     }

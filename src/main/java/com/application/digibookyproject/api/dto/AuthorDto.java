@@ -1,5 +1,7 @@
 package com.application.digibookyproject.api.dto;
 
-public record AuthorDto(String firstname,
-                        String lastname) {
+public record AuthorDto(
+        String firstname,
+        String lastname
+) {
 }
