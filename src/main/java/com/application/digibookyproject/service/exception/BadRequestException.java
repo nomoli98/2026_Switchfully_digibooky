@@ -25,7 +25,7 @@ public class BadRequestException extends RuntimeException {
         return new BadRequestException("Loan parameter %s is required".formatted(parameter));
     }
 
-    public static BadRequestException notMatchingUser() {
+    public static BadRequestException NotMatchingUser() {
         return new BadRequestException("This loan is not linked to this user.");
     }
 }

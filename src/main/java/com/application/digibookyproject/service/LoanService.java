@@ -51,7 +51,7 @@ public class LoanService {
 
     public Loan closeLoan(UUID loanId, String email){
         Loan existingLoan = loanRepository.get(loanId).orElseThrow(() -> NotFoundException.loanNotFound(loanId));
-        if (!existingLoan.getMember().getEmail().equals(email)) throw BadRequestException.notMatchingUser();
+        if (!existingLoan.getMember().getEmail().equals(email)) throw BadRequestException.NotMatchingUser();
         return loanRepository.deleteWithId(loanId, existingLoan);
     }
 
