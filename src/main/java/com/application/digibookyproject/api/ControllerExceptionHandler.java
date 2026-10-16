@@ -16,7 +16,6 @@ import java.util.UUID;
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(ControllerExceptionHandler.class);
 
-    // Expected client error → WARN, message is enough (no stack trace)
     @ExceptionHandler(NotFoundException.class)
     protected void notFound(NotFoundException ex, HttpServletResponse response) throws IOException {
         logger.warn("Not found: {}", ex.getMessage());
@@ -47,11 +46,13 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         response.sendError(HttpStatus.FORBIDDEN.value(), ex.getMessage());
     }
 
-    // Unexpected error → ERROR + stack trace + unique ID the client can report
     @ExceptionHandler(Exception.class)
     protected void unexpectedError(Exception ex, HttpServletResponse response) throws IOException {
         String errorId = UUID.randomUUID().toString();
-        logger.error("Unexpected error: {}", errorId, ex);   // exception LAST = stack trace included
-        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Something went wrong. Please contact support with code: " + errorId);
+        logger.error("Unexpected error: {}", errorId, ex);
+        response.sendError(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Something went wrong. Please contact support with code: %s".formatted(errorId)
+        );
     }
 }
