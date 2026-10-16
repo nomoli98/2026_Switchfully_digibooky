@@ -19,12 +19,13 @@ class PutBookServiceTest {
     BookService service;
     PostBookRequest postRequest;
     Book book;
-
+    LoanRepository loanRepository;
 
     @BeforeEach
     void initRepository() {
         repository = new BookRepository();
-        service = new BookService(repository, new LoanRepository());
+        loanRepository = new LoanRepository();
+        service = new BookService(repository, loanRepository);
 
         postRequest = new PostBookRequest(
                 "978-1-1234-5678-9",

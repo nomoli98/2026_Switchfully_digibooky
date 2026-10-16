@@ -2,6 +2,8 @@ package com.application.digibookyproject.service;
 
 import com.application.digibookyproject.domain.Author;
 import com.application.digibookyproject.domain.Book;
+import com.application.digibookyproject.domain.Loan;
+import com.application.digibookyproject.domain.member.Member;
 import com.application.digibookyproject.repository.BookRepository;
 import com.application.digibookyproject.service.exception.NotFoundException;
 import org.assertj.core.api.Assertions;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,5 +58,31 @@ class BookServiceTest {
         );
     }
 
+    @Test
+    @DisplayName("getting a book by id when it exists and is already being lent out")
+    void getOne_givenBookExistsAndIsBeingLentOut_thenReturnBookWithLoan() {
+        Member member = new Member(
+                "lastname",
+                "firstname",
+                "email@example.com",
+                "streetname",
+                "streetnumber",
+                0,
+                "city",
+                "validInss"
+        );
+        Loan loan = new Loan(member, book, LocalDate.now().plusWeeks(Loan.DEFAULT_LOAN_DURATION_IN_WEEKS));
+        book.setLoan(loan);
+        Book resultBook = bookRepository.get(book.getId()).orElseThrow(() -> NotFoundException.bookNotFound(
+                book.getId()));
+        assertEquals(resultBook.getLoan(), book.getLoan());
+    }
 
+    @Test
+    @DisplayName("getting a book by id when it exists and is not being lent out")
+    void getOne_givenBookExistsAndIsNotBeingLentOut_thenReturnBookWithNoLoan() {
+        Book resultBook = bookRepository.get(book.getId()).orElseThrow(() -> NotFoundException.bookNotFound(
+                book.getId()));
+        Assertions.assertThat(resultBook.getLoan()).isNull();
+    }
 }

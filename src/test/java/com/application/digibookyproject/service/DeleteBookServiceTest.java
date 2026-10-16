@@ -19,12 +19,13 @@ class DeleteBookServiceTest {
     Book book;
     BookService service;
     UUID id;
-
+    LoanRepository loanRepository;
 
     @BeforeEach
     void initRepository() {
         repository = new BookRepository();
-        service = new BookService(repository, new LoanRepository());
+        loanRepository = new LoanRepository();
+        service = new BookService(repository, loanRepository);
         book = new Book(
                 "978-1-1234-5678-9",
                 "le title",
@@ -48,6 +49,4 @@ class DeleteBookServiceTest {
     void givenNotExistingBookToDelete_whenCallingDeletingBook_thenThrowsException() {
         Assertions.assertThatThrownBy(() -> service.deleteBook(UUID.randomUUID())).isInstanceOf(Exception.class);
     }
-
-
 }
