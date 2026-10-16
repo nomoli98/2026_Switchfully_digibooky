@@ -22,8 +22,6 @@ public class LoanRepository extends InMemoryRepository<Loan> {
     }
 
     public List<Loan> getAllLoansWithMemberId(UUID memberId) {
-        return getAll().stream()
-                .filter(loan -> loan.getMember().getId().equals(memberId))
-                .toList();
+        return getAllWhere(loan -> loan.getMember().getId().equals(memberId));
     }
 }

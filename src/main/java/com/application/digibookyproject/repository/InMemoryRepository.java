@@ -48,4 +48,10 @@ public class InMemoryRepository<T> {
     protected Optional<T> getOptional(Predicate<T> predicate) {
         return storedItems.values().stream().filter(predicate).findAny();
     }
+
+    protected List<T> getAllWhere(Predicate<T> predicate) {
+        return getAll().stream()
+                .filter(predicate)
+                .toList();
+    }
 }
