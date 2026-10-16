@@ -13,12 +13,13 @@ class PostBookServiceTest {
     BookRepository repository;
     PostBookRequest request;
     BookService service;
-
+    LoanRepository loanRepository;
 
     @BeforeEach
     void initRepository() {
         repository = new BookRepository();
-        service = new BookService(repository, new LoanRepository());
+        loanRepository = new LoanRepository();
+        service = new BookService(repository, loanRepository);
     }
 
     @Test
@@ -176,6 +177,4 @@ class PostBookServiceTest {
         );
         Assertions.assertThatThrownBy(() -> service.createBook(request)).isInstanceOf(BadRequestException.class);
     }
-
-
 }

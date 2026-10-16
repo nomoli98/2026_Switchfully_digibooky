@@ -14,4 +14,8 @@ public class NotFoundException extends RuntimeException {
     public static NotFoundException memberNotFound(String email) {
         return new NotFoundException("The member with the email %s could not be found".formatted(email));
     }
+
+    public static NotFoundException loanNotFound(UUID id) {
+        return new NotFoundException("The loan with the id %s could not be found".formatted(id));
+    }
 }

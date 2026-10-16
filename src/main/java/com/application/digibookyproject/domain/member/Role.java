@@ -14,7 +14,10 @@ public enum Role {
             Permission.DELETE_BOOK,
             Permission.VIEW_LOANS
     )),
-    MEMBER(List.of());
+    MEMBER(List.of(
+            Permission.REGISTER_LOAN,
+            Permission.CLOSE_LOAN
+    ));
 
     private final List<Permission> permissions;
 

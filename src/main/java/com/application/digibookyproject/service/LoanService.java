@@ -49,6 +49,12 @@ public class LoanService {
         return loanRepository.save(loan);
     }
 
+    public Loan closeLoan(UUID loanId, String email){
+        Loan existingLoan = loanRepository.get(loanId).orElseThrow(() -> NotFoundException.loanNotFound(loanId));
+        if (!existingLoan.getMember().getEmail().equals(email)) throw BadRequestException.notMatchingUser();
+        return loanRepository.deleteWithId(loanId, existingLoan);
+    }
+
     private void verifyFilledIn(String value, String parameterName) {
         if (value == null || value.isEmpty())
             throw BadRequestException.loanParameterRequired(parameterName);
